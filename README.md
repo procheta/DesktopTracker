@@ -1,3 +1,3 @@
 # DesktopTracker
 
-It is software that tracks user's desktop activities and provides suggestions based on that.
+It is a software that tracks user's desktop activities and provides suggestions based on that.
