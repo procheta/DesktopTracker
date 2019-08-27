@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -97,13 +98,13 @@ class Translucent extends JPanel implements ActionListener {
         JPanel p = new JPanel();
         p.setLayout(null);
         f.add(p);
-        
+
         for (int i = 0; i < numNotification; i++) {
             JButton b3 = new JButton("X");
             b3.setBackground(Color.CYAN);
             b3.setBorderPainted(false);
-            b3.setBorder(BorderFactory.createEmptyBorder());           
-            b3.setBounds(100, 100 + d, width+50, 20);
+            b3.setBorder(BorderFactory.createEmptyBorder());
+            b3.setBounds(100, 100 + d, width + 50, 20);
             b3.setText(s);
             b3.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -157,7 +158,9 @@ class WriteObject {
 
     public WriteObject(String line) {
         line = line.replaceAll("\\[Window:", "");
-        String chunks[] = line.split("-");
+        String chunks[] = line.split("]");
+        line = chunks[0] + "] " + chunks[1].replaceAll("-", "");
+        chunks = line.split("-");
         windowTitle = chunks[0];
         application = "";
         if (chunks.length > 3) {
@@ -173,12 +176,8 @@ class WriteObject {
         if (typed_words.length() == 1) {
             typed_words = "NA";
         }
-        try {
-            chunks[chunks.length - 1] = chunks[chunks.length - 1].substring(0, chunks[chunks.length - 1].lastIndexOf("]"));
-            timeStamp = new TimeStamp(chunks[chunks.length - 1]);
-        } catch (Exception e) {
-            System.out.println(line);
-        }
+        chunks[chunks.length - 1] = chunks[chunks.length - 1].substring(0, chunks[chunks.length - 1].lastIndexOf("]"));
+        timeStamp = new TimeStamp(chunks[chunks.length - 1]);
     }
 
     public WriteObject(String line, TimeStamp t, String windowTitle, String application) {
@@ -197,6 +196,14 @@ class WriteObject {
 public class ReadKeyStrokeLog {
 
     ArrayList<String> wordList;
+    String keyLogFile;
+
+    public ReadKeyStrokeLog() throws FileNotFoundException, IOException {
+        Properties prop = new Properties();
+        prop.load(new FileReader(new File("init.properties")));
+        keyLogFile = prop.getProperty("KeyLogFile");
+        wordList = new ArrayList<>();
+    }
 
     public void addKeyword() {
         wordList = new ArrayList<>();
@@ -210,7 +217,7 @@ public class ReadKeyStrokeLog {
         wordList.add("\\[UP]");
     }
 
-    public HashSet<String> reverseKeyStrokeFileRead(File file) {
+    public HashSet<String> reverseKeyStrokeFileRead() {
         ReversedLinesFileReader object = null;
         int count = 0;
         HashSet<String> words = new HashSet<>();
@@ -219,7 +226,7 @@ public class ReadKeyStrokeLog {
         ArrayList<String> app = new ArrayList<>();
         String prevLine = "";
         try {
-            object = new ReversedLinesFileReader(file);
+            object = new ReversedLinesFileReader(new File(keyLogFile));
             WriteObject wob = null;
             while (object != null) {
                 String line = object.readLine();
@@ -236,7 +243,6 @@ public class ReadKeyStrokeLog {
                     wob.typed_words = wob.typed_words.toLowerCase();
                     wob.typed_words = wob.typed_words.replaceAll("[0-9]", " ");
                     prevLine = "";
-                    //System.out.println(wob);
                 }
                 String st[] = null;
                 if (wob != null) {
@@ -254,7 +260,6 @@ public class ReadKeyStrokeLog {
                 if (count == 200) {
                     break;
                 }
-                // }
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -267,14 +272,10 @@ public class ReadKeyStrokeLog {
                 e.printStackTrace();
             }
         }
-        System.out.println(words);
-        // System.out.println(times);
-        // System.out.println(windowTitle);
-        // System.out.println(app);
         return words;
     }
 
-    public void throwNotification(HashSet<String> words) {
+    public void throwNotification(HashSet<String> words, int num) {
 
         String notitficationLine = "";
         Iterator it = words.iterator();
@@ -283,33 +284,19 @@ public class ReadKeyStrokeLog {
             String word = (String) it.next();
             notitficationLine += word + " ";
             count++;
-            if (count == 5) {
+            if (count == num) {
                 break;
             }
         }
-       // notitficationLine = "<html>" + notitficationLine + "<br/>" + notitficationLine + "<br/>" + "<a href='https://google.com'>urlllllllllllllllllllllllllllllllllllll</a>" + "</html>";
-        System.out.println(notitficationLine);
+        // notitficationLine = "<html>" + notitficationLine + "<br/>" + notitficationLine + "<br/>" + "<a href='https://google.com'>urlllllllllllllllllllllllllllllllllllll</a>" + "</html>";
         Translucent t = new Translucent();
-        t.notificationTrayCreation(notitficationLine,3);
-    }
-
-    public void runMethod() throws InterruptedException {
-        while (true) {
-            ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
-            HashSet<String> words = rkl.reverseKeyStrokeFileRead(new File("C:/Users/Procheta/Desktop/System32Log.txt"));
-            rkl.throwNotification(words);
-            Thread.sleep(20000);
-        }
+        t.notificationTrayCreation(notitficationLine, 3);
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        // while (true) {
         ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
         rkl.addKeyword();
-        HashSet<String> words = rkl.reverseKeyStrokeFileRead(new File("C:/Users/Procheta/Desktop/System32Log.txt"));
-        rkl.throwNotification(words);
-        //   Thread.sleep(20000);
-        //}
-        //rkl.readKeyLogFile();
+        HashSet<String> words = rkl.reverseKeyStrokeFileRead();
+        rkl.throwNotification(words,5);
     }
 }

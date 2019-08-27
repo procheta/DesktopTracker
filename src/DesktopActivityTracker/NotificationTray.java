@@ -12,17 +12,23 @@ package DesktopActivityTracker;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
 public class NotificationTray {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException {
         /* Use an appropriate Look and Feel */
+
+        Properties prop = new Properties();
+        prop.load(new FileReader(new File("init.properties")));
 
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -46,13 +52,15 @@ public class NotificationTray {
             }
         });
         ProcessTrigger pr = new ProcessTrigger();
-        pr.loadProcess();
+        String processPath = prop.getProperty("process");
+        pr.loadProcess(processPath);
 
+        int notificationNum = Integer.parseInt(prop.getProperty("NotifyNum"));
         while (true) {
             ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
             rkl.addKeyword();
-            HashSet<String> words = rkl.reverseKeyStrokeFileRead(new File("C:/Users/Procheta/Desktop/System32Log.txt"));
-            rkl.throwNotification(words);
+            HashSet<String> words = rkl.reverseKeyStrokeFileRead();
+            rkl.throwNotification(words,notificationNum);
             Thread.sleep(10000);
         }
     }
@@ -93,8 +101,15 @@ public class NotificationTray {
         exitItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 tray.remove(trayIcon);
+                Properties prop = new Properties();
+                try {
+                    prop.load(new FileReader(new File("init.properties")));
+                } catch (Exception ex) {
+                    Logger.getLogger(NotificationTray.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                String processNum = prop.getProperty("processNum");
                 ProcessTrigger pr = new ProcessTrigger();
-                pr.stopProcess();
+                pr.stopProcess(processNum);
                 System.exit(0);
             }
         });

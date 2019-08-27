@@ -11,26 +11,25 @@ package DesktopActivityTracker;
  */
 public class ProcessTrigger {
 
-    public void loadProcess() {
+    public void loadProcess(String processPath) {
 
         Runtime r = Runtime.getRuntime();
         Process p = null;
         try {
-            String s = "C:\\Windows\\notepad.exe";
-            p = r.exec(s);
+            p = r.exec(processPath);
         } catch (Exception e) {
             System.out.println("error===" + e.getMessage());
             e.printStackTrace();
         }
     }
     
-    public void stopProcess() {
+    public void stopProcess(String processNum) {
 
         Runtime r = Runtime.getRuntime();
         Process p = null;
         try {
             String s = "C";
-            p = r.exec("TASKKILL /F /IM notepad.exe");
+            p = r.exec("TASKKILL /F /IM "+processNum);
            
         } catch (Exception e) {
             System.out.println("error===" + e.getMessage());
@@ -39,11 +38,9 @@ public class ProcessTrigger {
     }
     public static void main(String[] args) throws InterruptedException{
         ProcessTrigger pr = new ProcessTrigger();
-        pr.loadProcess();
-        System.out.println("hereee");
+        pr.loadProcess(args[0]);
         Thread.sleep(10000);
-        pr.stopProcess();
-         System.out.println("thereereee");
+        pr.stopProcess(args[1]);
     }
 
 }
