@@ -1,0 +1,181 @@
+
+
+[Window: Select C:\Users\Procheta\Downloads\Keylogger-master\windows\klog_main.exe - at Mon May 14 17:07:59 2018] a
+
+[Window: C:\Users\Procheta\Downloads\Keylogger-master\windows\klog_main.exe - at Mon May 14 17:08:00 2018] 
+d
+
+c
+
+
+
+
+[Window: New Text Document (8) - Notepad - at Mon May 14 17:08:34 2018] ssss
+
+[Window: Drafts (42) - senprocheta@gmail.com - Gmail - Google Chrome - at Mon May 14 17:09:20 2018] 
+
+this is a new mailjano ami ekta keylogger peyechi
+jeta windows mac¼  linux 3 te tei cholbe
+oi program chalie dile
+tumi ja i lekh [BACKSPACE]o seta log hote thakbe with timw[BACKSPACE]e
+emn[BACKSPACE]onki ei je chat korchi
+setao logged hoche
+with file name
+arey egulo khub i common bypar seta dekhal[BACKSPACE][BACKSPACE]lam
+emonki windows 10 theke [BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE]by default ei key log collect kore
+os theke
+oder research purpose e
+ha oke aj sign korate f[BACKSPACE]gr[BACKSPACE]echilam
+to bollo je ei week e meeting korbe
+o ajke avishek er paper submit korlo
+saturday sunday dhore paper likhchilo
+
+
+[Window: c++ - unresolved windows externals - Stack Overflow - Google Chrome - at Mon May 14 17:13:53 2018] can [SHIFT]I RUN A C PROGRAM USING JAVA 
+
+
+[Window: Inbox (81) - senprocheta@gmail.com - Gmail - Google Chrome - at Mon May 14 17:15:12 2018] HA AREY EI PAPER O S[BACKSPACE]PUBLISH KOREI CHARBE
+SETA AMI BUJHECHI
+
+
+[Window: New Java Class - at Mon May 14 17:23:15 2018] [SHIFT]vec[SHIFT]FILE[SHIFT]process
+
+[Window: TaskModeling - NetBeans IDE 8.2 - at Mon May 14 17:23:25 2018] 
+
+public void process[SHIFT]9[RIGHT][SHIFT]ÛÝ[LEFT]
+
+
+
+[UP][UP][UP][SHIFT][SHIFT][SHIFT][SHIFT][SHIFT][SHIFT]FILE[SHIFT]reader fr » new [SHIFT][SHIFT][SHIFT][SHIFT]FILE[SHIFT]reader[SHIFT]9new [SHIFT]file[SHIFT]9[SHIFT]2[RIGHT][RIGHT][RIGHT]º
+
+
+
+[SHIFT]buffered[SHIFT]reader br » new [CONTROL] 
+
+[RIGHT][RIGHT]º
+
+[SHIFT]string line » br.r
+º
+
+while[SHIFT]9line [SHIFT]1» NULL[RIGHT][SHIFT]ÛÝ
+.[LEFT]
+
+
+
+[RIGHT]..[DOWN][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][UP][TAB]line » br.r
+º[UP][UP][UP][UP][UP][UP]
+[SHIFT]file[SHIFT]writer fw » new [CONTROL] 
+
+[RIGHT][RIGHT]º[LEFT][LEFT][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE]new [SHIFT]file[SHIFT]9[SHIFT]2[DOWN][UP][RIGHT][RIGHT][RIGHT][RIGHT]
+[SHIFT]buffee[BACKSPACE]red[SHIFT]w[BACKSPACE][SHIFT]writer bw » new [CONTROL] 
+
+[RIGHT][RIGHT]º
+[CONTROL]s[DOWN][DOWN][DOWN][DOWN][DOWN][UP][TAB]bw.wr
+[RIGHT][RIGHT][UP][RIGHT][RIGHT]
+if[SHIFT]9LINE [SHIFT][SHIFT]1» [SHIFT]2[LEFT][LEFT][LEFT][LEFT][LEFT][LEFT][LEFT][LEFT][LEFT][SHIFT]1[RIGHT][RIGHT][RIGHT][RIGHT][RIGHT][RIGHT][RIGHT][RIGHT][LEFT][LEFT][LEFT][LEFT][LEFT][LEFT][LEFT][LEFT][BACKSPACE][DOWN][DOWN][UP][LEFT][LEFT][LEFT][SHIFT]Û[RIGHT][DOWN][SHIFT]Ý
+bw.n
+[CONTROL]s[CONTROL]s
+bw.c
+[CONTROL]s[DOWN]
+[UP][DOWN]public static void main[SHIFT]9[RIGHT][SHIFT]ÛÝ[LEFT][LEFT][LEFT][SHIFT]stringÛ[RIGHT] args[RIGHT][RIGHT]
+
+
+
+[UP][UP][CONTROL]s[SHIFT]vec[SHIFT]f[CONTROL] 
+ vfp » new [CONTROL] 
+º
+vfp.[DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN]
+[CONTROL]s
+
+
+[Window: Inbox (81) - senprocheta@gmail.com - Gmail - Google Chrome - at Mon May 14 17:29:35 2018] [SHIFT]ºP
+ETA THIK BOLECHO
+
+
+[Window: TaskModeling - NetBeans IDE 8.2 - at Mon May 14 17:30:10 2018] ¿HOME¿PROCHETA¿[CONTROL]S[SHIFT]aol[SHIFT]QUERY[SHIFT]vec[SHIFT]NEW.TXT[CONTROL]C[CONTROL]V[CONTROL]S[BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE]TEST.TXT[CONTROL]S[CONTROL]C[CONTROL]C
+
+[Window: Drafts (42) - senprocheta@gmail.com - Gmail - Google Chrome - at Mon May 14 17:32:54 2018] 
+
+
+[UP][UP][CONTROL][CONTROL][CONTROL]V[CONTROL][CONTROL][CONTROL][CONTROL][CONTROL][CONTROL]
+
+
+[Window: can I run a c program using java - Google Search - Google Chrome - at Mon May 14 17:53:04 2018] RUNNING A .EXE FILE IN WINDOWS IN BACKGROUND
+
+
+[Window: running a .exe file in windows in background - Google Search - Google Chrome - at Mon May 14 17:55:18 2018] .C FILE IN BACKGROUND IN WINDOE[BACKSPACE]WS
+
+
+[Window: How can I execute a Windows command line in background? - Super User - Google Chrome - at Mon May 14 17:56:04 2018] [DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN]
+
+[Window: __ShowWindow@8 referenced in function - Google Search - Google Chrome - at Mon May 14 18:09:34 2018] JAVA PROGRAM TO CHECK LAST ACCESSED FILE IN A DIRECTORYÝ
+
+
+[Window: java program to check last accessed file in a directory] - Google Search - Google Chrome - at Mon May 14 18:10:15 2018] AUT[BACKSPACE][BACKSPACE][BACKSPACE]JAVA PROGRAM THROW NOTIF[BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE]EXCEPTION IF A FILE IS OPENED
+[BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE]GET FILE ACCESS LOG
+
+
+[Window: java program to get file access log - Google Search - Google Chrome - at Mon May 14 18:11:34 2018] [BACKSPACE][BACKSPACE][BACKSPACE]HISTORY
+
+
+[Window: java program to get file access history - Google Search - Google Chrome - at Mon May 14 18:12:45 2018] MOUSE CLICJ[BACKSPACE][DOWN][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE] LOG[DOWN][DOWN]
+
+
+[Window: mouse click logger - Google Search - Google Chrome - at Mon May 14 18:13:13 2018]  ITEM 
+
+
+[Window: mouse click item logger - Google Search - Google Chrome - at Mon May 14 18:15:10 2018] PROGRAMMATICALLY FOUN[BACKSPACE][BACKSPACE][BACKSPACE]IND A DOCUMENT CLICKED BY MOI[BACKSPACE]USE
+
+
+[Window: C program of Keylogger or keystroke logger | C codechamp | Learn C Programming | C Language | C programs - Google Chrome - at Mon May 14 18:16:33 2018] F
+
+
+[Window: Facebook – log in or sign up - Google Chrome - at Mon May 14 18:16:37 2018] PROCHETAÞ[SHIFT]-[SHIFT]arka
+
+
+[Window: programmatically find a document clicked by mouse - Google Search - Google Chrome - at Mon May 14 18:19:28 2018] [BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE]find a document from mouse pointer locaion
+
+
+[Window: find a document from mouse pointer locaion - Google Search - Google Chrome - at Mon May 14 18:19:58 2018]  [BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE]tion in windows
+
+
+[Window: Your Projects - ShareLaTeX, Online LaTeX Editor - Google Chrome - at Mon May 14 18:23:20 2018] core
+
+
+[Window: find a document from mouse pointer location in windows - Google Search - Google Chrome - at Mon May 14 18:24:55 2018] capture the event of clicking on a document programatically
+
+
+[Window: capture the event of clicking on a document programatically - Google Search - Google Chrome - at Mon May 14 18:25:19 2018] mouse click log in windows
+
+
+[Window: Search - at Mon May 14 18:28:23 2018] RUN
+
+[Window: Collect Windows log files - Google Chrome - at Mon May 14 18:30:24 2018] [CONTROL]C
+
+[Window: Run - at Mon May 14 18:30:28 2018] [CONTROL]V
+
+[Window: Detecting Mouse clicks in windows using python - Stack Overflow - Google Chrome - at Mon May 14 18:32:39 2018] [DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN]
+
+[Window: SetWindowsHookEx function (Windows) - Google Chrome - at Mon May 14 18:33:31 2018] [DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN][DOWN]
+
+[Window: mouse click log in windows - Google Search - Google Chrome - at Mon May 14 18:35:06 2018] SOFTWARE FOR COLLECTING MOUSE CLICK LOG IN WINDOWS
+
+
+[Window: software for collecting mouse click log in windows - Google Search - Google Chrome - at Mon May 14 18:37:56 2018] WINDOWS LAST ACCESED [BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE]FILE ACCESS LOG SOFTWARE
+
+
+[Window: file access log software - Google Search - Google Chrome - at Mon May 14 18:39:48 2018] FILE READ NOTIFICATION [BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE]EVENT CAPTURE BY JAVA PROGRAM
+
+
+[Window: file read event capture by java program - Google Search - Google Chrome - at Mon May 14 18:40:57 2018] [BACKSPACE][BACKSPACE]FILE WATHCHER JAVA CAN CAPTURE FILE READ EVENT
+
+
+[Window: How to watch the file system for changes in Java 7 (JDK 7) - DZone Java - Google Chrome - at Mon May 14 18:45:36 2018] [CONTROL]C
+
+[Window: DesktopTracker - NetBeans IDE 8.2 - at Mon May 14 18:45:40 2018] [CONTROL][CONTROL][CONTROL][CONTROL]V
+
+[Window: How to watch the file system for changes in Java 7 (JDK 7) - DZone Java - Google Chrome - at Mon May 14 18:45:49 2018] [CONTROL]C
+
+[Window: DesktopTracker - NetBeans IDE 8.2 - at Mon May 14 18:45:52 2018] [CONTROL]V.[CONTROL] [BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][CONTROL] .[BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE][BACKSPACE]
+
+[Window: file wathcher java can capture file read event - Google Search - Google Chrome - at Mon May 14 18:46:46 2018] CREATE NEW STANDARD [BACKSPACE]WATCH [BACKSPACE]EVENT
