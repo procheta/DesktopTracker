@@ -1,0 +1,6 @@
+ENTRY_CREATE: C:\Users\Procheta\Documents\NetBeansProjects\trecTopic\src\trectopic\New Text Document.txt
+ENTRY_MODIFY: C:\Users\Procheta\Documents\NetBeansProjects\trecTopic\src\trectopic\New Text Document.txt
+ENTRY_MODIFY: C:\Users\Procheta\Documents\NetBeansProjects\trecTopic\src\trectopic\CreateTokens.java
+ENTRY_MODIFY: C:\Users\Procheta\Documents\NetBeansProjects\trecTopic\src\trectopic\CreateTokens.java
+ENTRY_DELETE: C:\Users\Procheta\Documents\NetBeansProjects\trecTopic\src\trectopic\CreateTokens.java
+ENTRY_CREATE: C:\Users\Procheta\Documents\NetBeansProjects\trecTopic\src\trectopic\CreateTokens.java

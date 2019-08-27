@@ -1,0 +1,5 @@
+DesktopActivityTracker.Translucent
+DesktopActivityTracker.TimeStamp
+DesktopActivityTracker.WriteObject
+DesktopActivityTracker.Translucent$1
+DesktopActivityTracker.ReadKeyStrokeLog
