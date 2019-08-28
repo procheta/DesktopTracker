@@ -5,6 +5,8 @@
  */
 package DesktopActivityTracker;
 
+import com.alee.laf.window.WebFrame;
+import com.alee.managers.style.StyleId;
 import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.Desktop;
@@ -13,6 +15,7 @@ import java.awt.FontMetrics;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.RoundRectangle2D;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -156,36 +159,53 @@ class Translucent extends JPanel implements ActionListener {
         }
     }
 
-    public void notificationTrayCreation(ArrayList<String> docIdList, ArrayList<String> summaryList, int numNotification) {
-
+    public void notificationTrayCreation(ArrayList<String> docIdList, ArrayList<String> summaryList, int numNotification) {       
         FontMetrics metrics = getFontMetrics(getFont());
         int width = metrics.stringWidth(docIdList.get(0));
         final JFrame f = new JFrame();
+        f.setUndecorated(true);
+        f.setShape(new RoundRectangle2D.Double(100, 50, 400, 200, 150, 150));
+        f.setSize(500, 300);
+        f.setLocation(800, 300);
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        f.setAlwaysOnTop(true);
-        f.setSize(400, 400);
-        f.setLocation(100, 100);
-        f.setVisible(true);
+        f.setAlwaysOnTop(true);       
+        
+       
         int d = 0;
         JPanel p = new JPanel();
-        p.setLayout(null);
+        p.setLayout(null);       
+        p.setBackground(Color.darkGray);
         f.add(p);
+        
         int d1 = 20;
         if (numNotification > docIdList.size()) {
             numNotification = docIdList.size();
         }
+        JButton b4 = new JButton("X");
+        b4.setBackground(Color.darkGray);
+        b4.setForeground(Color.white);
+        b4.setBorderPainted(false);
+        b4.setBorder(BorderFactory.createEmptyBorder());
+        b4.setBounds(400, 70, 30, 30);
+        p.add(b4);
+        
+         b4.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    f.dispose();
+                }
+            });
         
         for (int i = 0; i < numNotification; i++) {
             JButton b3 = new JButton("X");
-            b3.setBackground(Color.CYAN);
+            b3.setBackground(Color.lightGray);
             b3.setBorderPainted(false);
             b3.setBorder(BorderFactory.createEmptyBorder());
-            b3.setBounds(100, 100 + d, width + 50, 20);
+            b3.setBounds(150, 100 + d, width + 50, 20);
             b3.setText(docIdList.get(i));
             JLabel l = new JLabel();
             l.setText(summaryList.get(i));
-            l.setBackground(Color.red);
-            l.setBounds(100, 100 + d1, 300, 20);
+            l.setForeground(Color.white);
+            l.setBounds(150, 100 + d1, 300, 20);
             d1 = d1 + 40;
             b3.addActionListener(new ActionListener() {
 
@@ -202,6 +222,7 @@ class Translucent extends JPanel implements ActionListener {
             p.add(l);
             d = d + 40;
         }
+        f.setVisible(true);
     }
 }
 
@@ -441,6 +462,8 @@ public class ReadKeyStrokeLog {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        
+        
         ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
         rkl.addKeyword();
         HashSet<String> words = rkl.reverseKeyStrokeFileRead();

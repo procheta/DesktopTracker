@@ -11,6 +11,8 @@ package DesktopActivityTracker;
  */
 public class ProcessTrigger {
 
+    String OS;
+
     public void loadProcess(String processPath) {
 
         Runtime r = Runtime.getRuntime();
@@ -22,21 +24,28 @@ public class ProcessTrigger {
             e.printStackTrace();
         }
     }
-    
+
     public void stopProcess(String processNum) {
 
         Runtime r = Runtime.getRuntime();
         Process p = null;
         try {
             String s = "C";
-            p = r.exec("TASKKILL /F /IM "+processNum);
-           
+           // if (OS.equals("Windows")) {
+                Process process = Runtime.getRuntime().exec(processNum);
+                p = r.exec("TASKKILL /F /IM " + processNum);
+           // } else  if (OS.equals("Linux")){
+             //   
+             //   process.destroy();
+           // }
+
         } catch (Exception e) {
             System.out.println("error===" + e.getMessage());
             e.printStackTrace();
         }
     }
-    public static void main(String[] args) throws InterruptedException{
+
+    public static void main(String[] args) throws InterruptedException {
         ProcessTrigger pr = new ProcessTrigger();
         pr.loadProcess(args[0]);
         Thread.sleep(10000);
