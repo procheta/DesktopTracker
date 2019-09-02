@@ -24,7 +24,7 @@ import javax.swing.*;
 
 public class NotificationTray {
 
-    public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException {
+    public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException, Exception {
         /* Use an appropriate Look and Feel */
 
         Properties prop = new Properties();
@@ -52,15 +52,15 @@ public class NotificationTray {
             }
         });
         ProcessTrigger pr = new ProcessTrigger();
-        String processPath = prop.getProperty("process");
-        pr.loadProcess(processPath);
+        //String processPath = prop.getProperty("process");
+       // pr.loadProcess(processPath);
 
-        int notificationNum = Integer.parseInt(prop.getProperty("NotifyNum"));
+       // int notificationNum = Integer.parseInt(prop.getProperty("NotifyNum"));
         while (true) {
             ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
             rkl.addKeyword();
             HashSet<String> words = rkl.reverseKeyStrokeFileRead();
-            rkl.throwNotification(words,notificationNum);
+            rkl.throwNotification(words,3);
             Thread.sleep(10000);
         }
     }
