@@ -9,6 +9,7 @@ package DesktopActivityTracker;
  *
  * @author Procheta
  */
+import AdditionalComponents.FileAccess;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -52,11 +53,15 @@ public class NotificationTray {
             }
         });
         ProcessTrigger pr = new ProcessTrigger();
-        //String processPath = prop.getProperty("process");
-       // pr.loadProcess(processPath);
+        String processPath = prop.getProperty("process");
+        pr.loadProcess(processPath);
 
+       
+       FileAccess fa = new FileAccess();
+       
        // int notificationNum = Integer.parseInt(prop.getProperty("NotifyNum"));
         while (true) {
+            fa.check(prop.getProperty("accessFolder"),prop.getProperty("AccessLog"));
             ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
             rkl.addKeyword();
             HashSet<String> words = rkl.reverseKeyStrokeFileRead();

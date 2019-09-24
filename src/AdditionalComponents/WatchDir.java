@@ -205,7 +205,11 @@ public class WatchDir {
         // register directory and process its events
         // Path dir = Paths.get(args[dirArg]);
         recursive = true;
-        Path dir = Paths.get("C:\\Users\\Procheta\\Documents\\NetBeansProjects\\trecTopic\\src/trectopic/");
+        
+        File processCheck = new File( "C:\\\\Users\\\\Procheta/Desktop/VisaDocs/" );
+        Boolean canBeDeleted = processCheck.canWrite( );
+        
+        Path dir = Paths.get("C:\\Users\\Procheta/Desktop");
         //  C:\Users\Procheta\Documents\NetBeansProjects\trecTopic\src
         new WatchDir(dir, recursive, "C:\\Users\\Procheta\\Documents\\NetBeansProjects\\DesktopTracker/log/a.txt").processEvents();
     }

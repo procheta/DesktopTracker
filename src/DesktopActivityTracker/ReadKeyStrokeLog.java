@@ -20,10 +20,12 @@ import java.awt.font.TextAttribute;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,6 +40,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -152,7 +155,7 @@ class Translucent extends JPanel implements ActionListener {
         int width1 = metrics.stringWidth(docIdList.get(0));
         final JFrame f = new JFrame();
         f.setUndecorated(true);
-       // f.setShape(new RoundRectangle2D.Double(100, 50, 400, 200, 150, 150));
+        // f.setShape(new RoundRectangle2D.Double(100, 50, 400, 200, 150, 150));
         f.setSize(500, 300);
         f.setLocation(800, 300);
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -170,7 +173,7 @@ class Translucent extends JPanel implements ActionListener {
         l1.setBounds(20, 30, 90, 50);
         JLabel l2 = new JLabel();
         l2.setText("Proactive Agent");
-        l2.setBounds(100, 30, 90, 50);        
+        l2.setBounds(100, 30, 90, 50);
         p.add(l1);
         p.add(l2);
         f.add(p);
@@ -184,43 +187,61 @@ class Translucent extends JPanel implements ActionListener {
         b4.setForeground(Color.BLACK);
         b4.setBorderPainted(false);
         b4.setText("CLOSE");
-        
+
         b4.setBorder(BorderFactory.createEmptyBorder());
         b4.setBounds(350, 30, 120, 30);
         p.add(b4);
 
         b4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                FileWriter fw = null;
+                try {
+                    fw = new FileWriter(new File("C:\\Users\\Procheta\\Desktop/clicklog.txt"), true);
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    Calendar c = Calendar.getInstance();
+                    bw.write("closed" + " " + c.getTime().toString());
+                    bw.newLine();
+                    bw.close();
+                } catch (Exception ex) {
+                    Logger.getLogger(Translucent.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
                 f.dispose();
             }
         });
 
-         for (int i = 0; i < numNotification; i++) {
+        for (int i = 0; i < numNotification; i++) {
             //JButton b3 = new JButton("X");
             final CustomButton b3 = new CustomButton(docIdList.get(i));
             b3.setOpaque(false);
             b3.setContentAreaFilled(false);
             //b3.setBorderPainted(false);
-           // b3.setBorder(BorderFactory.createCompoundBorder());
+            // b3.setBorder(BorderFactory.createCompoundBorder());
             b3.setBorder(new LineBorder(Color.BLACK));
             b3.setBounds(20, 100 + d, width1 + 180, 20);
-            
+
             Font ff = new Font("Courier New", Font.BOLD, 14);
             b3.setFont(ff);
             Map attributes = b3.getFont().getAttributes();
-            attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);           
+            attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
             b3.setText(titleList.get(i));
             JLabel l = new JLabel();
             l.setText(summaryList.get(i));
             l.setFont(new Font("Courier New", Font.ITALIC, 12));
             l.setForeground(Color.BLACK);
-            l.setBounds(20, 100 + d1, width+50, 30);
+            l.setBounds(20, 100 + d1, width + 50, 30);
             d1 = d1 + 40;
             b3.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                   try {
-                        System.out.println(e.getActionCommand());
+                    try {
+                        // System.out.println(e.getActionCommand());
+                        FileWriter fw = new FileWriter(new File("C:\\Users\\Procheta\\Desktop/clicklog.txt"), true);
+                        BufferedWriter bw = new BufferedWriter(fw);
+                        Calendar c = Calendar.getInstance();
+                        bw.write(b3.title + " " + c.getTime().toString());
+                        bw.newLine();
+                        bw.close();
                         Desktop.getDesktop().browse(new URL("http://clueweb.adaptcentre.ie/WebSearcher/view?docid=" + b3.title).toURI());
                     } catch (Exception ex) {
                         Logger.getLogger(Translucent.class.getName()).log(Level.SEVERE, null, ex);
@@ -414,7 +435,6 @@ public class ReadKeyStrokeLog {
         ArrayList<String> docIdList = new ArrayList<>();
         ArrayList<String> titleList = new ArrayList<>();
         ArrayList<ResponseData> resps = createRankedListUsingClueweb("java program", 3);
-        
 
         for (int i = 0; i < 3; i++) {
             String docId = resps.get(i).docId;
@@ -456,7 +476,7 @@ public class ReadKeyStrokeLog {
                 st2 = st2.replace("]", "");
                 char d = '"';
                 String st4 = st2.substring(st2.indexOf("id" + d), st2.length());
-               // String title = st2.substring(st2.indexOf("title") + 8, st2.indexOf("snippet") - 3);
+                // String title = st2.substring(st2.indexOf("title") + 8, st2.indexOf("snippet") - 3);
                 String title = st2.substring(st2.indexOf("title") + 8, st2.indexOf("url") - 3);
                 //String Snippet = st2.substring(st2.indexOf("snippet") + 10, st2.indexOf("url") - 3);
                 String Snippet = st2.substring(st2.indexOf("snippet") + 10, st2.indexOf("id") - 3);
