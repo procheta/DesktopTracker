@@ -55,17 +55,20 @@ public class NotificationTray {
         ProcessTrigger pr = new ProcessTrigger();
         String processPath = prop.getProperty("process");
         pr.loadProcess(processPath);
-
+        System.out.println("Process Loaded");
+        String imagePath= prop.getProperty("img");
        
        FileAccess fa = new FileAccess();
        
        // int notificationNum = Integer.parseInt(prop.getProperty("NotifyNum"));
         while (true) {
             fa.check(prop.getProperty("accessFolder"),prop.getProperty("AccessLog"));
+            System.out.println("Access Folder checked");
             ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
             rkl.addKeyword();
             HashSet<String> words = rkl.reverseKeyStrokeFileRead();
-            rkl.throwNotification(words,3);
+            System.out.println("activity log read");
+            rkl.throwNotification(words,3,imagePath);
             Thread.sleep(10000);
         }
     }

@@ -149,7 +149,7 @@ class Translucent extends JPanel implements ActionListener {
         return dimg;
     }
 
-    public void notificationTrayCreation(ArrayList<String> docIdList, ArrayList<String> summaryList, ArrayList<String> titleList, int numNotification) throws IOException {
+    public void notificationTrayCreation(ArrayList<String> docIdList, ArrayList<String> summaryList, ArrayList<String> titleList, int numNotification,String imagePath) throws IOException {
         FontMetrics metrics = getFontMetrics(getFont());
         int width = metrics.stringWidth(summaryList.get(0));
         int width1 = metrics.stringWidth(docIdList.get(0));
@@ -166,7 +166,7 @@ class Translucent extends JPanel implements ActionListener {
         p.setLayout(null);
         p.setBackground(new Color(210, 219, 230));
 
-        Image img = resizeImage("C:/Users/Procheta/Desktop/agent.jpg");
+        Image img = resizeImage(imagePath);
         //Image img = resizeImage("agent.jpg");
         ImageIcon icon = new ImageIcon(img);
         JLabel l1 = new JLabel(icon);
@@ -360,7 +360,7 @@ public class ReadKeyStrokeLog {
         wordList.add("\\[UP]");
     }
 
-    public HashSet<String> reverseKeyStrokeFileRead() {
+    public HashSet<String> reverseKeyStrokeFileRead() throws IOException {
         ReversedLinesFileReader object = null;
         int count = 0;
         HashSet<String> words = new HashSet<>();
@@ -407,18 +407,13 @@ public class ReadKeyStrokeLog {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } finally {
-            try {
-                object.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+            return words;
+        } 
+        object.close();
         return words;
     }
 
-    public void throwNotification(HashSet<String> words, int num) throws MalformedURLException, IOException, Exception {
+    public void throwNotification(HashSet<String> words, int num,String imagePath) throws MalformedURLException, IOException, Exception {
 
         String notitficationLine = "";
         Iterator it = words.iterator();
@@ -445,7 +440,7 @@ public class ReadKeyStrokeLog {
         }
         // notitficationLine = "<html>" + notitficationLine + "<br/>" + notitficationLine + "<br/>" + "<a href='https://google.com'>urlllllllllllllllllllllllllllllllllllll</a>" + "</html>";
         Translucent t = new Translucent();
-        t.notificationTrayCreation(docIdList, summaryList, titleList, 3);
+        t.notificationTrayCreation(docIdList, summaryList, titleList, 3,imagePath);
     }
 
     public ArrayList<ResponseData> createRankedListUsingClueweb(String s, int num) throws UnsupportedEncodingException, MalformedURLException, IOException {
@@ -598,7 +593,7 @@ public class ReadKeyStrokeLog {
         ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
         rkl.addKeyword();
         HashSet<String> words = rkl.reverseKeyStrokeFileRead();
-        rkl.throwNotification(words, 5);
+       // rkl.throwNotification(words, 5);
         //  rkl.createRankedListUsingClueweb("dog", 5);
     }
 }
