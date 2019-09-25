@@ -79,8 +79,8 @@ import org.apache.tika.parser.html.HtmlParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.xml.sax.ContentHandler;
 import org.json.simple.parser.JSONParser;
+import org.xml.sax.ContentHandler;
 import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 
@@ -149,7 +149,7 @@ class Translucent extends JPanel implements ActionListener {
         return dimg;
     }
 
-    public void notificationTrayCreation(ArrayList<String> docIdList, ArrayList<String> summaryList, ArrayList<String> titleList, int numNotification,String imagePath, String clickLogPath) throws IOException {
+    public void notificationTrayCreation(ArrayList<String> docIdList, ArrayList<String> summaryList, ArrayList<String> titleList, int numNotification, String imagePath, String clickLogPath) throws IOException {
         FontMetrics metrics = getFontMetrics(getFont());
         int width = metrics.stringWidth(summaryList.get(0));
         int width1 = metrics.stringWidth(docIdList.get(0));
@@ -190,7 +190,7 @@ class Translucent extends JPanel implements ActionListener {
         b4.setBorder(BorderFactory.createEmptyBorder());
         b4.setBounds(350, 30, 120, 30);
         p.add(b4);
-        final String  clickPath = clickLogPath;
+        final String clickPath = clickLogPath;
         b4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 FileWriter fw = null;
@@ -368,33 +368,35 @@ public class ReadKeyStrokeLog {
             WriteObject wob = null;
             while (object != null) {
                 String line = object.readLine();
-                for (String s : wordList) {
-                    line = line.replaceAll(s, "");
-                }
-                line = line.replaceAll("\\p{C}", "");
-                line = line.replaceAll("[^\\x00-\\x7F]", "");
-
-                if (line.startsWith("[Window:")) {
-                    wob = new WriteObject(line);
-                    wob.typed_words += prevLine;
-                    wob.typed_words = wob.typed_words.replaceAll("\\.", " ");
-                    wob.typed_words = wob.typed_words.toLowerCase();
-                    wob.typed_words = wob.typed_words.replaceAll("[0-9]", " ");
-                    prevLine = "";
-                }
-                String st[] = null;
-                if (wob != null) {
-                    st = wob.typed_words.split("\\s+");
-                    for (String s : st) {
-                        if (s.length() > 2) {
-                            words.add(s);
-                        }
+                if (line != null) {
+                    for (String s : wordList) {
+                        line = line.replaceAll(s, "");
                     }
-                } else {
-                    prevLine += line + " ";
-                }
+                    line = line.replaceAll("\\p{C}", "");
+                    line = line.replaceAll("[^\\x00-\\x7F]", "");
 
-                count++;
+                    if (line.startsWith("[Window:")) {
+                        wob = new WriteObject(line);
+                        wob.typed_words += prevLine;
+                        wob.typed_words = wob.typed_words.replaceAll("\\.", " ");
+                        wob.typed_words = wob.typed_words.toLowerCase();
+                        wob.typed_words = wob.typed_words.replaceAll("[0-9]", " ");
+                        prevLine = "";
+                    }
+                    String st[] = null;
+                    if (wob != null) {
+                        st = wob.typed_words.split("\\s+");
+                        for (String s : st) {
+                            if (s.length() > 2) {
+                                words.add(s);
+                            }
+                        }
+                    } else {
+                        prevLine += line + " ";
+                    }
+
+                    count++;
+                }
                 if (count == 200) {
                     break;
                 }
@@ -403,12 +405,12 @@ public class ReadKeyStrokeLog {
             // TODO Auto-generated catch block
             e.printStackTrace();
             return words;
-        } 
+        }
         object.close();
         return words;
     }
 
-    public void throwNotification(HashSet<String> words, int num,String imagePath, String clickPath) throws MalformedURLException, IOException, Exception {
+    public void throwNotification(HashSet<String> words, int num, String imagePath, String clickPath) throws MalformedURLException, IOException, Exception {
 
         String notitficationLine = "";
         Iterator it = words.iterator();
@@ -435,7 +437,7 @@ public class ReadKeyStrokeLog {
         }
         // notitficationLine = "<html>" + notitficationLine + "<br/>" + notitficationLine + "<br/>" + "<a href='https://google.com'>urlllllllllllllllllllllllllllllllllllll</a>" + "</html>";
         Translucent t = new Translucent();
-        t.notificationTrayCreation(docIdList, summaryList, titleList, 3,imagePath,clickPath);
+        t.notificationTrayCreation(docIdList, summaryList, titleList, 3, imagePath, clickPath);
     }
 
     public ArrayList<ResponseData> createRankedListUsingClueweb(String s, int num) throws UnsupportedEncodingException, MalformedURLException, IOException {
@@ -461,13 +463,10 @@ public class ReadKeyStrokeLog {
             }
             for (int j1 = 0; j1 < num; j1++) {
                 ResponseData rpd = new ResponseData();
-                String st1 = ((Object) jsonArray.get(j1)).toString();
-                String st2 = st1.replace("[", "");
-                st2 = st2.replace("]", "");
-                char d = '"';
-                String st4 = st2.substring(st2.indexOf("id" + d), st2.length());
-                String title = st2.substring(st2.indexOf("title") + 8, st2.indexOf("url") - 3);
-                String Snippet = st2.substring(st2.indexOf("snippet") + 10, st2.indexOf("id") - 3);
+                JSONArray job = (JSONArray) (jsonArray.get(j1));
+                JSONObject job1 = (JSONObject) job.get(0);
+                String Snippet = (String) job1.get("snippet");
+                String title = (String) job1.get("title");
                 Snippet = Snippet.replaceAll("n", "");
                 Snippet = Snippet.replaceAll("t", "");
                 Snippet = Snippet.replaceAll("\\\\", "");
@@ -476,22 +475,7 @@ public class ReadKeyStrokeLog {
                 rpd.Snippet = Snippet;
                 rpd.title = title;
 
-                String st7 = st4;
-                try {
-                    st4 = st4.substring(0, st4.indexOf(","));
-                    String st3[] = st2.split(",");
-                    String st5[] = st4.split(":");
-                    st5[1] = st5[1].replace("" + d, "");
-                    docIdList.add(st5[1]);
-                    rpd.docId = st5[1];
-                } catch (Exception e) {
-                    st7 = st7.substring(st7.indexOf(",") + 1, st7.length());
-                    String st8 = st7.substring(0, st7.indexOf(","));
-                    String st5[] = st8.split(":");
-                    st5[1] = st5[1].replace("" + d, "");
-                    docIdList.add(st5[1]);
-                    rpd.docId = st5[1];
-                }
+                rpd.docId = (String) job1.get("id");
                 resps.add(rpd);
             }
         } catch (Exception e) {
