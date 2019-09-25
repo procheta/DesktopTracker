@@ -22,54 +22,47 @@ import java.util.Date;
 public class FileAccess {
 
     public int getTimeDifference(String currTime, String accessTime) {
-        String currentHHMM = currTime.split(" ")[3];
-        String fileHHMM = accessTime.substring(accessTime.indexOf("T") + 1, accessTime.indexOf(".") - 1);
-        String currTimeSplit[] = currentHHMM.split(":");
-        String fileTimeSplit[] = fileHHMM.split(":");
-        if (Integer.parseInt(currTimeSplit[0]) < (Integer.parseInt(fileTimeSplit[0]) + 1)) {
-            return -1;
-        } else if ((Integer.parseInt(currTimeSplit[1]) - Integer.parseInt(fileTimeSplit[1])) >= 0 && (Integer.parseInt(currTimeSplit[1]) - Integer.parseInt(fileTimeSplit[1])) < 3) {
-            return 1;
-        } else {
+        try {
+            String currentHHMM = currTime.split(" ")[3];
+            String fileHHMM = accessTime.substring(accessTime.indexOf("T") + 1, accessTime.indexOf(".") - 1);
+            String currTimeSplit[] = currentHHMM.split(":");
+            String fileTimeSplit[] = fileHHMM.split(":");
+            if (Integer.parseInt(currTimeSplit[0]) < (Integer.parseInt(fileTimeSplit[0]) + 1)) {
+                return -1;
+            } else if ((Integer.parseInt(currTimeSplit[1]) - Integer.parseInt(fileTimeSplit[1])) >= 0 && (Integer.parseInt(currTimeSplit[1]) - Integer.parseInt(fileTimeSplit[1])) < 3) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } catch (Exception e) {
             return -1;
         }
     }
 
     public void check(String folderpath, String writeFile) throws IOException, InterruptedException {
         Calendar c = Calendar.getInstance();
+        File dir = new File(folderpath);
+        File[] directoryListing = dir.listFiles();
 
-        
-       // for (;;) {
-            File dir = new File(folderpath);
-            File[] directoryListing = dir.listFiles();
-
-            String currTime = c.getTime().toString();
-            FileWriter fw = new FileWriter(new File(writeFile),true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            for (File f : directoryListing) {
-                File myfile = new File(dir.getPath() + "/" + f.getName());
-                Path path = myfile.toPath();
-                BasicFileAttributes fatr = Files.readAttributes(path,
-                        BasicFileAttributes.class);
-                int flag = getTimeDifference(currTime, fatr.lastAccessTime().toString());
-                if (flag == 1) {
-                    //System.out.printf("File Access time: %s%n", fatr.lastAccessTime());
-                    //System.out.println(f.getName());
-                    bw.write(f.getAbsolutePath()+"/"+f.getName()+ " "+ fatr.lastAccessTime().toString());
-                    bw.newLine();
-                }
+        String currTime = c.getTime().toString();
+        FileWriter fw = new FileWriter(new File(writeFile), true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        for (File f : directoryListing) {
+            File myfile = new File(dir.getPath() + "/" + f.getName());
+            Path path = myfile.toPath();
+            BasicFileAttributes fatr = Files.readAttributes(path,
+                    BasicFileAttributes.class);
+            int flag = getTimeDifference(currTime, fatr.lastAccessTime().toString());
+            if (flag == 1) {
+                bw.write(f.getAbsolutePath() + "/" + f.getName() + " " + fatr.lastAccessTime().toString());
+                bw.newLine();
             }
-           // Thread.sleep(50000);
-            bw.close();
+        }
+        bw.close();
 
-            // String fileName = "C:\\Users\\Procheta\\Desktop/VisaDocs/doc1.html";
-        //}
-        
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        FileAccess fa = new FileAccess();
-        //fa.check();
 
     }
 }

@@ -31,13 +31,8 @@ public class ProcessTrigger {
         Process p = null;
         try {
             String s = "C";
-           // if (OS.equals("Windows")) {
-                Process process = Runtime.getRuntime().exec(processNum);
-                p = r.exec("TASKKILL /F /IM " + processNum);
-           // } else  if (OS.equals("Linux")){
-             //   
-             //   process.destroy();
-           // }
+            Process process = Runtime.getRuntime().exec(processNum);
+            p = r.exec("TASKKILL /F /IM " + processNum);
 
         } catch (Exception e) {
             System.out.println("error===" + e.getMessage());

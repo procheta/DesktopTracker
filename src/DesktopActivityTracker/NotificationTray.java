@@ -52,23 +52,22 @@ public class NotificationTray {
                 createAndShowGUI();
             }
         });
-        ProcessTrigger pr = new ProcessTrigger();
+       /* ProcessTrigger pr = new ProcessTrigger();
         String processPath = prop.getProperty("process");
         pr.loadProcess(processPath);
-        System.out.println("Process Loaded");
+        System.out.println("Process Loaded");*/
         String imagePath= prop.getProperty("img");
-       
+        String clickPath = prop.getProperty("click");
        FileAccess fa = new FileAccess();
        
-       // int notificationNum = Integer.parseInt(prop.getProperty("NotifyNum"));
         while (true) {
             fa.check(prop.getProperty("accessFolder"),prop.getProperty("AccessLog"));
             System.out.println("Access Folder checked");
             ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
             rkl.addKeyword();
             HashSet<String> words = rkl.reverseKeyStrokeFileRead();
-            System.out.println("activity log read");
-            rkl.throwNotification(words,3,imagePath);
+            System.out.println("Activity log Read Complete");
+            rkl.throwNotification(words,3,imagePath,clickPath);
             Thread.sleep(10000);
         }
     }
@@ -115,9 +114,10 @@ public class NotificationTray {
                 } catch (Exception ex) {
                     Logger.getLogger(NotificationTray.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                /*
                 String processNum = prop.getProperty("processNum");
                 ProcessTrigger pr = new ProcessTrigger();
-                pr.stopProcess(processNum);
+                pr.stopProcess(processNum);*/
                 System.exit(0);
             }
         });

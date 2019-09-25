@@ -38,12 +38,6 @@ public class TrayIconDemo {
                 // Initializing WebLaF managers
                 // Your application L&F will still be the same as before
                 WebLookAndFeel.initializeManagers();
-                
-                /*final WebFrame frame = new WebFrame(StyleId.frameDecorated, "Dark frame");
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                frame.setSize(400, 300);
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);*/
                 final WebPanel panel = new WebPanel ( StyleId.of ( "shadow" ), new VerticalFlowLayout ( true, true ) );
                 final WebLabel title = new WebLabel ( StyleId.of ( "title" ), "Panel Title" );
                 panel.add ( title );

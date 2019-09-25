@@ -149,13 +149,12 @@ class Translucent extends JPanel implements ActionListener {
         return dimg;
     }
 
-    public void notificationTrayCreation(ArrayList<String> docIdList, ArrayList<String> summaryList, ArrayList<String> titleList, int numNotification,String imagePath) throws IOException {
+    public void notificationTrayCreation(ArrayList<String> docIdList, ArrayList<String> summaryList, ArrayList<String> titleList, int numNotification,String imagePath, String clickLogPath) throws IOException {
         FontMetrics metrics = getFontMetrics(getFont());
         int width = metrics.stringWidth(summaryList.get(0));
         int width1 = metrics.stringWidth(docIdList.get(0));
         final JFrame f = new JFrame();
         f.setUndecorated(true);
-        // f.setShape(new RoundRectangle2D.Double(100, 50, 400, 200, 150, 150));
         f.setSize(500, 300);
         f.setLocation(800, 300);
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -191,12 +190,12 @@ class Translucent extends JPanel implements ActionListener {
         b4.setBorder(BorderFactory.createEmptyBorder());
         b4.setBounds(350, 30, 120, 30);
         p.add(b4);
-
+        final String  clickPath = clickLogPath;
         b4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 FileWriter fw = null;
                 try {
-                    fw = new FileWriter(new File("C:\\Users\\Procheta\\Desktop/clicklog.txt"), true);
+                    fw = new FileWriter(new File(clickPath), true);
                     BufferedWriter bw = new BufferedWriter(fw);
                     Calendar c = Calendar.getInstance();
                     bw.write("closed" + " " + c.getTime().toString());
@@ -211,12 +210,9 @@ class Translucent extends JPanel implements ActionListener {
         });
 
         for (int i = 0; i < numNotification; i++) {
-            //JButton b3 = new JButton("X");
             final CustomButton b3 = new CustomButton(docIdList.get(i));
             b3.setOpaque(false);
             b3.setContentAreaFilled(false);
-            //b3.setBorderPainted(false);
-            // b3.setBorder(BorderFactory.createCompoundBorder());
             b3.setBorder(new LineBorder(Color.BLACK));
             b3.setBounds(20, 100 + d, width1 + 180, 20);
 
@@ -235,8 +231,7 @@ class Translucent extends JPanel implements ActionListener {
 
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        // System.out.println(e.getActionCommand());
-                        FileWriter fw = new FileWriter(new File("C:\\Users\\Procheta\\Desktop/clicklog.txt"), true);
+                        FileWriter fw = new FileWriter(new File(clickPath), true);
                         BufferedWriter bw = new BufferedWriter(fw);
                         Calendar c = Calendar.getInstance();
                         bw.write(b3.title + " " + c.getTime().toString());
@@ -413,7 +408,7 @@ public class ReadKeyStrokeLog {
         return words;
     }
 
-    public void throwNotification(HashSet<String> words, int num,String imagePath) throws MalformedURLException, IOException, Exception {
+    public void throwNotification(HashSet<String> words, int num,String imagePath, String clickPath) throws MalformedURLException, IOException, Exception {
 
         String notitficationLine = "";
         Iterator it = words.iterator();
@@ -440,7 +435,7 @@ public class ReadKeyStrokeLog {
         }
         // notitficationLine = "<html>" + notitficationLine + "<br/>" + notitficationLine + "<br/>" + "<a href='https://google.com'>urlllllllllllllllllllllllllllllllllllll</a>" + "</html>";
         Translucent t = new Translucent();
-        t.notificationTrayCreation(docIdList, summaryList, titleList, 3,imagePath);
+        t.notificationTrayCreation(docIdList, summaryList, titleList, 3,imagePath,clickPath);
     }
 
     public ArrayList<ResponseData> createRankedListUsingClueweb(String s, int num) throws UnsupportedEncodingException, MalformedURLException, IOException {
@@ -471,9 +466,7 @@ public class ReadKeyStrokeLog {
                 st2 = st2.replace("]", "");
                 char d = '"';
                 String st4 = st2.substring(st2.indexOf("id" + d), st2.length());
-                // String title = st2.substring(st2.indexOf("title") + 8, st2.indexOf("snippet") - 3);
                 String title = st2.substring(st2.indexOf("title") + 8, st2.indexOf("url") - 3);
-                //String Snippet = st2.substring(st2.indexOf("snippet") + 10, st2.indexOf("url") - 3);
                 String Snippet = st2.substring(st2.indexOf("snippet") + 10, st2.indexOf("id") - 3);
                 Snippet = Snippet.replaceAll("n", "");
                 Snippet = Snippet.replaceAll("t", "");
@@ -483,10 +476,6 @@ public class ReadKeyStrokeLog {
                 rpd.Snippet = Snippet;
                 rpd.title = title;
 
-                // title = title.replace("", param1)
-                //title = title.replaceAll(, "");
-                System.out.println(title);
-                System.out.println(Snippet);
                 String st7 = st4;
                 try {
                     st4 = st4.substring(0, st4.indexOf(","));
@@ -499,7 +488,6 @@ public class ReadKeyStrokeLog {
                     st7 = st7.substring(st7.indexOf(",") + 1, st7.length());
                     String st8 = st7.substring(0, st7.indexOf(","));
                     String st5[] = st8.split(":");
-                    //System.out.println(st8);
                     st5[1] = st5[1].replace("" + d, "");
                     docIdList.add(st5[1]);
                     rpd.docId = st5[1];
@@ -507,7 +495,6 @@ public class ReadKeyStrokeLog {
                 resps.add(rpd);
             }
         } catch (Exception e) {
-            System.out.println("entered" + e);
             e.printStackTrace();
         }
         System.out.println(resps.size());
@@ -554,11 +541,7 @@ public class ReadKeyStrokeLog {
         StringBuffer buff = new StringBuffer();
         SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter();
         Query q = buildQuery("dog");
-        //Highlighter highlighter = new Highlighter(htmlFormatter, new QueryScorer(q));
-        // Get the decompressed html
         String html = getHtmlString(docid);
-        // String html = "";
-        // Generate snippet...
         InputStream input = new ByteArrayInputStream(html.getBytes(StandardCharsets.UTF_8));
         ContentHandler handler = new BodyContentHandler(-1);
         Metadata metadata = new Metadata();
@@ -566,13 +549,6 @@ public class ReadKeyStrokeLog {
         String text = handler.toString();
         Analyzer analyzer = new EnglishAnalyzer();
         TokenStream tokenStream = analyzer.tokenStream("dummy", new StringReader(text));
-        /*TextFragment[] frag = highlighter.getBestTextFragments(tokenStream, text, false, 5);
-        for (int j = 0; j < frag.length; j++) {
-            if ((frag[j] != null) && (frag[j].getScore() > 0)) {
-                buff.append((frag[j].toString()));
-            }
-        }*/
-        //String snippet = buff.toString();
         String snippet = text.substring(0, 200);
         String modifiedText = snippet;
 
@@ -584,8 +560,6 @@ public class ReadKeyStrokeLog {
         }
         snippet = modifiedText;
         return snippet;
-        //byte[] encodedBytes = Base64.encodeBase64(snippet.getBytes());
-        //return new String(encodedBytes);
     }
 
     public static void main(String[] args) throws IOException, InterruptedException, Exception {
@@ -593,7 +567,5 @@ public class ReadKeyStrokeLog {
         ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
         rkl.addKeyword();
         HashSet<String> words = rkl.reverseKeyStrokeFileRead();
-       // rkl.throwNotification(words, 5);
-        //  rkl.createRankedListUsingClueweb("dog", 5);
     }
 }
