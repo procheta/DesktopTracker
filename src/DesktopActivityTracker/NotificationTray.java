@@ -49,7 +49,6 @@ public class NotificationTray {
         //adding TrayIcon.
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-
                 createAndShowGUI();
             }
         });
@@ -57,9 +56,11 @@ public class NotificationTray {
         String processPath = prop.getProperty("process");
         pr.loadProcess(processPath);
         System.out.println("Process Loaded");*/
-        String imagePath= prop.getProperty("img");
-        String clickPath = prop.getProperty("click");
-       FileAccess fa = new FileAccess();
+       
+        FileAccess fa = new FileAccess();
+        int numDoc = Integer.parseInt(prop.getProperty("numDoc"));
+        int num = Integer.parseInt(prop.getProperty("numQ"));
+        int interval = Integer.parseInt(prop.getProperty("interval"));
        
         while (true) {
             fa.check(prop.getProperty("accessFolder"),prop.getProperty("AccessLog"));
@@ -67,9 +68,11 @@ public class NotificationTray {
             ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
             rkl.addKeyword();
             ArrayList<wordObject> words = (ArrayList<wordObject>) rkl.reverseKeyStrokeFileRead();
+            ArrayList<wordObject> relWords =rkl.readRelDocs(prop.getProperty("relFolder"), prop.getProperty("stop"));
+            words.addAll(relWords);
             System.out.println("Activity log Read Complete");
-            rkl.throwNotification(words,3,imagePath,clickPath);
-            Thread.sleep(10000);
+            rkl.throwNotification(words,num,numDoc);
+            Thread.sleep(interval);
         }
     }
 

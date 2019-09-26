@@ -5,9 +5,6 @@
  */
 package DesktopActivityTracker;
 
-import com.alee.laf.window.WebFrame;
-import com.alee.managers.style.StyleId;
-import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
@@ -17,7 +14,6 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.font.TextAttribute;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -29,7 +25,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
@@ -41,7 +36,6 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -66,16 +60,17 @@ import javax.swing.border.LineBorder;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.core.StopFilter;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
-import org.apache.lucene.search.highlight.TextFragment;
+import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.html.HtmlParser;
@@ -86,20 +81,18 @@ import org.json.simple.parser.JSONParser;
 import org.xml.sax.ContentHandler;
 import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  *
  * @author Procheta
  */
 class CustomButton extends JButton {
-
     String title;
-
     public CustomButton(String title) {
         super();
         this.title = title;
     }
-
 }
 
 class wordObject implements Comparable<wordObject> {
@@ -109,10 +102,8 @@ class wordObject implements Comparable<wordObject> {
 
     @Override
     public int compareTo(wordObject o) {
-
         return (this.tf - o.tf);
     }
-
 }
 
 class Translucent extends JPanel implements ActionListener {
@@ -144,17 +135,23 @@ class Translucent extends JPanel implements ActionListener {
             }
             mSetWindowOpacity.invoke(null, window, Float.valueOf(0.75f));
         } catch (NoSuchMethodException ex) {
-            ex.printStackTrace();
+           // ex.printStackTrace();
+           System.out.println("No such method exception occurred in window creation");
         } catch (SecurityException ex) {
-            ex.printStackTrace();
+           // ex.printStackTrace();
+            System.out.println("Security exception occurred in window creation");
         } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
+            System.out.println("Class not found exception occurred in window creation"); 
         } catch (IllegalAccessException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
+             System.out.println("Illegal access exception occurred in window creation");
         } catch (IllegalArgumentException ex) {
-            ex.printStackTrace();
+           // ex.printStackTrace();
+            System.out.println("Illegal argument exception occurred in window creation");
         } catch (InvocationTargetException ex) {
-            ex.printStackTrace();
+           // ex.printStackTrace();
+            System.out.println("Target invocation exception occurred in window creation");
         }
     }
 
@@ -165,10 +162,10 @@ class Translucent extends JPanel implements ActionListener {
         return dimg;
     }
 
-    public void notificationTrayCreation(ArrayList<String> docIdList, ArrayList<String> summaryList, ArrayList<String> titleList, int numNotification, String imagePath, String clickLogPath) throws IOException {
+    public void notificationTrayCreation(ArrayList<ResponseData> resps, int numNotification, String imagePath, String clickLogPath) throws IOException {
         FontMetrics metrics = getFontMetrics(getFont());
-        int width = metrics.stringWidth(summaryList.get(0));
-        int width1 = metrics.stringWidth(docIdList.get(0));
+        int width = metrics.stringWidth(resps.get(0).Snippet);
+        int width1 = metrics.stringWidth(resps.get(0).docId);
         final JFrame f = new JFrame();
         f.setUndecorated(true);
         f.setSize(500, 300);
@@ -182,7 +179,6 @@ class Translucent extends JPanel implements ActionListener {
         p.setBackground(new Color(210, 219, 230));
 
         Image img = resizeImage(imagePath);
-        //Image img = resizeImage("agent.jpg");
         ImageIcon icon = new ImageIcon(img);
         JLabel l1 = new JLabel(icon);
         l1.setBounds(20, 30, 90, 50);
@@ -194,8 +190,8 @@ class Translucent extends JPanel implements ActionListener {
         f.add(p);
 
         int d1 = 20;
-        if (numNotification > docIdList.size()) {
-            numNotification = docIdList.size();
+        if (numNotification > resps.size()) {
+            numNotification = resps.size();
         }
         JButton b4 = new JButton("X");
         b4.setBackground(new Color(210, 219, 230));
@@ -226,7 +222,7 @@ class Translucent extends JPanel implements ActionListener {
         });
 
         for (int i = 0; i < numNotification; i++) {
-            final CustomButton b3 = new CustomButton(docIdList.get(i));
+            final CustomButton b3 = new CustomButton(resps.get(i).docId);
             b3.setOpaque(false);
             b3.setContentAreaFilled(false);
             b3.setBorder(new LineBorder(Color.BLACK));
@@ -236,9 +232,9 @@ class Translucent extends JPanel implements ActionListener {
             b3.setFont(ff);
             Map attributes = b3.getFont().getAttributes();
             attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-            b3.setText(titleList.get(i));
+            b3.setText(resps.get(i).title);
             JLabel l = new JLabel();
-            l.setText(summaryList.get(i));
+            l.setText(resps.get(i).Snippet);
             l.setFont(new Font("Courier New", Font.ITALIC, 12));
             l.setForeground(Color.BLACK);
             l.setBounds(20, 100 + d1, width + 50, 30);
@@ -268,11 +264,9 @@ class Translucent extends JPanel implements ActionListener {
 }
 
 class ResponseData {
-
     String title;
     String Snippet;
     String docId;
-
 }
 
 class TimeStamp {
@@ -300,7 +294,6 @@ class TimeStamp {
     public String toString() {
         return String.format("Date: " + day + " " + month + " " + year + "  Time: " + hour + ":" + minute + ":" + second);
     }
-
 }
 
 class WriteObject {
@@ -342,7 +335,6 @@ class WriteObject {
     }
 
     public String toString() {
-
         return String.format("Window Title: " + windowTitle + " Application: " + application + " TimeStamp: " + timeStamp + " Typed Words: " + typed_words);
     }
 }
@@ -351,11 +343,15 @@ public class ReadKeyStrokeLog {
 
     ArrayList<String> wordList;
     String keyLogFile;
+    String imagePath;
+    String clickPath;
 
     public ReadKeyStrokeLog() throws FileNotFoundException, IOException {
         Properties prop = new Properties();
         prop.load(new FileReader(new File("init.properties")));
         keyLogFile = prop.getProperty("KeyLogFile");
+        imagePath= prop.getProperty("img");
+        clickPath = prop.getProperty("click");
         wordList = new ArrayList<>();
     }
 
@@ -433,7 +429,8 @@ public class ReadKeyStrokeLog {
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Exception occurred while reading keyLog file");
             return null;
         }
         object.close();
@@ -448,10 +445,10 @@ public class ReadKeyStrokeLog {
         return values;
     }
 
-    public void throwNotification(ArrayList<wordObject> words, int num, String imagePath, String clickPath) throws MalformedURLException, IOException, Exception {
+    public void throwNotification(ArrayList<wordObject> words, int num, int numDoc) throws MalformedURLException, IOException, Exception {
 
         String notitficationLine = "";
-        Collections.sort(words);
+        Collections.sort(words,Collections.reverseOrder());
         int count = 0;
         for (int i = 0; i < words.size(); i++) {
             String word = words.get(i).word;
@@ -464,22 +461,18 @@ public class ReadKeyStrokeLog {
                 break;
             }
         }
-        ArrayList<String> summaryList = new ArrayList<>();
-        ArrayList<String> docIdList = new ArrayList<>();
-        ArrayList<String> titleList = new ArrayList<>();
-        ArrayList<ResponseData> resps = createRankedListUsingClueweb(notitficationLine, 3);
-
+        System.out.println("Proactive Query: "+notitficationLine);
+        ArrayList<ResponseData> resps = createRankedListUsingClueweb(notitficationLine, numDoc);
+        ArrayList<ResponseData> notifyList = new ArrayList<>();
         if (resps.size() > 0) {
-            for (int i = 0; i < 3; i++) {
-                String docId = resps.get(i).docId;
-                docIdList.add(docId);
-                summaryList.add(resps.get(i).Snippet);
-                // summaryList.add("Hello World. It is a proactive software. ");
-                titleList.add(resps.get(i).title);
+            if(numDoc > resps.size()){
+                numDoc = resps.size();
             }
-            // notitficationLine = "<html>" + notitficationLine + "<br/>" + notitficationLine + "<br/>" + "<a href='https://google.com'>urlllllllllllllllllllllllllllllllllllll</a>" + "</html>";
+            for (int i = 0; i < numDoc; i++) {
+                notifyList.add(resps.get(i));
+            }
             Translucent t = new Translucent();
-            t.notificationTrayCreation(docIdList, summaryList, titleList, 3, imagePath, clickPath);
+            t.notificationTrayCreation(notifyList, numDoc, imagePath, clickPath);
         }
     }
 
@@ -499,7 +492,6 @@ public class ReadKeyStrokeLog {
             JSONObject jobJSONObject = new JSONObject();
             JSONParser jsonParser = new JSONParser();
             JSONArray jsonArray = (JSONArray) jsonParser.parse(all);
-            ArrayList arr = new ArrayList<String>();
             int count = 0;
             if (num > jsonArray.size() - 1) {
                 num = jsonArray.size() - 1;
@@ -535,6 +527,111 @@ public class ReadKeyStrokeLog {
 
     }
 
+    public String processHtml(String html, String stopFile) throws IOException, SAXException, TikaException, Exception {
+        InputStream input = new ByteArrayInputStream(html.getBytes(StandardCharsets.UTF_8));
+        ContentHandler handler = new BodyContentHandler(-1);
+        Metadata metadata = new Metadata();
+        new HtmlParser().parse(input, handler, metadata, new ParseContext());
+        String title = metadata.get("title");
+        String text = preprocessText(html, false, stopFile);
+        text = title + "######sssss" + text;
+        System.out.println(title);
+        return text;
+    }
+
+    String preprocessText(String html, boolean title, String stopFile) throws IOException, Exception {
+
+        int freqCutoffThreshold = title ? 1 : -1;
+        HashMap<String, Integer> tfMap = new HashMap<>();
+        StringBuffer buff = new StringBuffer();
+        CharArraySet stopList = StopFilter.makeStopSet(buildStopwordList(stopFile));
+
+        TokenStream stream = constructAnalyzer(stopFile).tokenStream("field", new StringReader(html));
+        CharTermAttribute termAtt = stream.addAttribute(CharTermAttribute.class);
+
+        stream.reset();
+        while (stream.incrementToken()) {
+            String token = termAtt.toString();
+            Integer tf = tfMap.get(token);
+            if (tf == null) {
+                tf = new Integer(0);
+            }
+            tf++;
+            tfMap.put(token, tf);
+        }
+        stream.end();
+        stream.close();
+
+        for (Map.Entry<String, Integer> e : tfMap.entrySet()) {
+            String word = e.getKey();
+            int tf = e.getValue();
+            if (tf >= freqCutoffThreshold) {
+                for (int i = 0; i < tf; i++) { // print this word tf times... word order doesn't matter!
+                    buff.append(word).append(" ");
+                }
+            }
+        }
+        return buff.toString();
+    }
+
+    public ArrayList<wordObject> readRelDocs(String relDocPath, String stopFile) throws FileNotFoundException, IOException, TikaException, Exception {
+        File dir = new File(relDocPath);
+        File[] directoryListing = dir.listFiles();
+        HashMap<String, wordObject> wordMap = new HashMap<>();
+        for (File f : directoryListing) {
+            if (f.getName().endsWith(".html")) {
+                String line = "";
+                FileReader fr = new FileReader(f);
+                BufferedReader br = new BufferedReader(fr);
+                line = br.readLine();
+                String htmlText = "";
+                while (line != null) {
+                    htmlText += line;
+                    line = br.readLine();
+                }
+                String text = processHtml(htmlText, stopFile);
+                String body[] = text.split("######sssss");
+                String[] words = body[1].split("\\s+");
+                int maxFreq = 0;
+                for (String s : words) {
+                    if (!s.contains("_") && !s.contains(".")) {
+                        if (wordMap.containsKey(s)) {
+                            wordObject wob = wordMap.get(s);
+                            wob.tf++;
+                            if (maxFreq < wob.tf) {
+                                maxFreq = wob.tf;
+                            }
+                            wordMap.put(s, wob);
+                        } else {
+                            wordObject wob = new wordObject();
+                            wob.word = s;
+                            wob.tf = 1;
+                            if (maxFreq < wob.tf) {
+                                maxFreq = wob.tf;
+                            }
+                            wordMap.put(s, wob);
+                        }
+                    }
+                }
+                words = body[0].split("\\s+");
+                for (String s : words) {
+                    wordObject wob = new wordObject();
+                    wob.word = s;
+                    wob.tf = maxFreq + 50;
+                    wordMap.put(s, wob);
+                }
+            }
+        }
+
+        Iterator it = wordMap.keySet().iterator();
+        ArrayList<wordObject> values = new ArrayList<>();
+        while (it.hasNext()) {
+            String st = (String) it.next();
+            values.add(wordMap.get(st));
+        }
+        return values;
+    }
+
     public String getHtmlString(String docId) throws UnsupportedEncodingException, MalformedURLException, IOException {
         String charset = "UTF-8";  // Or in Java 7 and later, use the constant: java.nio.charset.StandardCharsets.UTF_8.name()
         String param1 = docId;
@@ -547,6 +644,28 @@ public class ReadKeyStrokeLog {
         }
         return all;
 
+    }
+
+    Analyzer constructAnalyzer(String stopFile) throws Exception {
+        Analyzer eanalyzer = new EnglishAnalyzer(StopFilter.makeStopSet(buildStopwordList(stopFile))); // default analyzer
+        return eanalyzer;
+    }
+
+    public List<String> buildStopwordList(String stopwordFileName) {
+        List<String> stopwords = new ArrayList<>();
+        String stopFile = stopwordFileName;
+        String line;
+
+        try (FileReader fr = new FileReader(stopFile);
+                BufferedReader br = new BufferedReader(fr)) {
+            while ((line = br.readLine()) != null) {
+                stopwords.add(line.trim());
+            }
+            br.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return stopwords;
     }
 
     Query buildQuery(String queryStr) throws Exception {
@@ -592,7 +711,7 @@ public class ReadKeyStrokeLog {
     public static void main(String[] args) throws IOException, InterruptedException, Exception {
 
         ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
-        rkl.addKeyword();
+        // rkl.addKeyword();
         //HashSet<String> words = rkl.reverseKeyStrokeFileRead();
     }
 }
