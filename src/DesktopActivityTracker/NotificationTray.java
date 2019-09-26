@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -65,7 +66,7 @@ public class NotificationTray {
             System.out.println("Access Folder checked");
             ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
             rkl.addKeyword();
-            HashSet<String> words = rkl.reverseKeyStrokeFileRead();
+            ArrayList<wordObject> words = (ArrayList<wordObject>) rkl.reverseKeyStrokeFileRead();
             System.out.println("Activity log Read Complete");
             rkl.throwNotification(words,3,imagePath,clickPath);
             Thread.sleep(10000);

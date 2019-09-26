@@ -41,7 +41,10 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -95,6 +98,19 @@ class CustomButton extends JButton {
     public CustomButton(String title) {
         super();
         this.title = title;
+    }
+
+}
+
+class wordObject implements Comparable<wordObject> {
+
+    String word;
+    int tf;
+
+    @Override
+    public int compareTo(wordObject o) {
+
+        return (this.tf - o.tf);
     }
 
 }
@@ -353,12 +369,17 @@ public class ReadKeyStrokeLog {
         wordList.add("\\[LEFT]");
         wordList.add("\\[TAB]");
         wordList.add("\\[UP]");
+        wordList.add("\\[ESCAPE]");
+        wordList.add("\\[END]");
+        wordList.add("\\[HOME]");
+        wordList.add("\\[CAPSLOCK]");
     }
 
-    public HashSet<String> reverseKeyStrokeFileRead() throws IOException {
+    public List<wordObject> reverseKeyStrokeFileRead() throws IOException {
         ReversedLinesFileReader object = null;
         int count = 0;
         HashSet<String> words = new HashSet<>();
+        HashMap<String, wordObject> wordMap = new HashMap<>();
         ArrayList<TimeStamp> times = new ArrayList<>();
         ArrayList<String> windowTitle = new ArrayList<>();
         ArrayList<String> app = new ArrayList<>();
@@ -388,7 +409,16 @@ public class ReadKeyStrokeLog {
                         st = wob.typed_words.split("\\s+");
                         for (String s : st) {
                             if (s.length() > 2) {
-                                words.add(s);
+                                if (!wordMap.containsKey(s)) {
+                                    wordObject wobb = new wordObject();
+                                    wobb.word = s;
+                                    wobb.tf = 1;
+                                    wordMap.put(s, wobb);
+                                } else {
+                                    wordObject wobb = wordMap.get(s);
+                                    wobb.tf++;
+                                    wordMap.put(s, wobb);
+                                }
                             }
                         }
                     } else {
@@ -404,21 +434,32 @@ public class ReadKeyStrokeLog {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return words;
+            return null;
         }
         object.close();
-        return words;
+
+        Iterator it = wordMap.keySet().iterator();
+        ArrayList<wordObject> values = new ArrayList<>();
+        while (it.hasNext()) {
+            String st = (String) it.next();
+            values.add(wordMap.get(st));
+        }
+
+        return values;
     }
 
-    public void throwNotification(HashSet<String> words, int num, String imagePath, String clickPath) throws MalformedURLException, IOException, Exception {
+    public void throwNotification(ArrayList<wordObject> words, int num, String imagePath, String clickPath) throws MalformedURLException, IOException, Exception {
 
         String notitficationLine = "";
-        Iterator it = words.iterator();
+        Collections.sort(words);
         int count = 0;
-        while (it.hasNext()) {
-            String word = (String) it.next();
-            notitficationLine += word + " ";
-            count++;
+        for (int i = 0; i < words.size(); i++) {
+            String word = words.get(i).word;
+            ArrayList<ResponseData> r = createRankedListUsingClueweb(word, 5);
+            if (r.size() > 0) {
+                notitficationLine += " " + words.get(i).word;
+                count++;
+            }
             if (count == num) {
                 break;
             }
@@ -426,18 +467,20 @@ public class ReadKeyStrokeLog {
         ArrayList<String> summaryList = new ArrayList<>();
         ArrayList<String> docIdList = new ArrayList<>();
         ArrayList<String> titleList = new ArrayList<>();
-        ArrayList<ResponseData> resps = createRankedListUsingClueweb("java program", 3);
+        ArrayList<ResponseData> resps = createRankedListUsingClueweb(notitficationLine, 3);
 
-        for (int i = 0; i < 3; i++) {
-            String docId = resps.get(i).docId;
-            docIdList.add(docId);
-            //summaryList.add(resps.get(i).Snippet);
-            summaryList.add("Hello World. It is a proactive software. ");
-            titleList.add(resps.get(i).title);
+        if (resps.size() > 0) {
+            for (int i = 0; i < 3; i++) {
+                String docId = resps.get(i).docId;
+                docIdList.add(docId);
+                summaryList.add(resps.get(i).Snippet);
+                // summaryList.add("Hello World. It is a proactive software. ");
+                titleList.add(resps.get(i).title);
+            }
+            // notitficationLine = "<html>" + notitficationLine + "<br/>" + notitficationLine + "<br/>" + "<a href='https://google.com'>urlllllllllllllllllllllllllllllllllllll</a>" + "</html>";
+            Translucent t = new Translucent();
+            t.notificationTrayCreation(docIdList, summaryList, titleList, 3, imagePath, clickPath);
         }
-        // notitficationLine = "<html>" + notitficationLine + "<br/>" + notitficationLine + "<br/>" + "<a href='https://google.com'>urlllllllllllllllllllllllllllllllllllll</a>" + "</html>";
-        Translucent t = new Translucent();
-        t.notificationTrayCreation(docIdList, summaryList, titleList, 3, imagePath, clickPath);
     }
 
     public ArrayList<ResponseData> createRankedListUsingClueweb(String s, int num) throws UnsupportedEncodingException, MalformedURLException, IOException {
@@ -479,9 +522,9 @@ public class ReadKeyStrokeLog {
                 resps.add(rpd);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Exception occurred while calling Clueweb Search API");
+            //e.printStackTrace();
         }
-        System.out.println(resps.size());
         return resps;
     }
 
@@ -550,6 +593,6 @@ public class ReadKeyStrokeLog {
 
         ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
         rkl.addKeyword();
-        HashSet<String> words = rkl.reverseKeyStrokeFileRead();
+        //HashSet<String> words = rkl.reverseKeyStrokeFileRead();
     }
 }

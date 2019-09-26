@@ -63,7 +63,7 @@ public class RelJudgeStatistics {
             ArrayList<String> ar = relDocMap.get(st);
             System.out.println(ar.size());
         }*/
-        System.out.println(relDocMap.get("44"));
+        System.out.println(relDocMap.get("27"));
         return relDocMap;
     }
 
@@ -73,7 +73,7 @@ public class RelJudgeStatistics {
 
         //while (it.hasNext()) {
             String st = (String) it.next();
-            System.out.println("Task number " + "25");
+            System.out.println("Task number " + "27");
            // if(st.equals("25")){
             ArrayList<String> ar = relDocMap.get("27");
             int count = 0;
@@ -82,9 +82,10 @@ public class RelJudgeStatistics {
                     // gethtmlformdocId(null,s);
                     String res = retrieve(s, 2);
                     if (!res.equals("")) {
+                        System.out.println(s);
                         count++;
                     }else{
-                        System.out.println("Not found");
+                        //System.out.println("Not found");
                     }
                 } catch (Exception e) {
 
