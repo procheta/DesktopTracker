@@ -88,7 +88,9 @@ import org.xml.sax.SAXException;
  * @author Procheta
  */
 class CustomButton extends JButton {
+
     String title;
+
     public CustomButton(String title) {
         super();
         this.title = title;
@@ -99,9 +101,24 @@ class wordObject implements Comparable<wordObject> {
 
     String word;
     int tf;
+    TimeStamp timestamp;
 
     @Override
     public int compareTo(wordObject o) {
+
+        return this.timestamp.getTimeDifference(o.timestamp);
+    }
+}
+
+class relObject implements Comparable<relObject> {
+
+    String word;
+    int tf;
+    DesktopActivityTracker.TimeStamp timestamp;
+
+    @Override
+    public int compareTo(relObject o) {
+
         return (this.tf - o.tf);
     }
 }
@@ -135,22 +152,22 @@ class Translucent extends JPanel implements ActionListener {
             }
             mSetWindowOpacity.invoke(null, window, Float.valueOf(0.75f));
         } catch (NoSuchMethodException ex) {
-           // ex.printStackTrace();
-           System.out.println("No such method exception occurred in window creation");
+            // ex.printStackTrace();
+            System.out.println("No such method exception occurred in window creation");
         } catch (SecurityException ex) {
-           // ex.printStackTrace();
+            // ex.printStackTrace();
             System.out.println("Security exception occurred in window creation");
         } catch (ClassNotFoundException ex) {
             //ex.printStackTrace();
-            System.out.println("Class not found exception occurred in window creation"); 
+            System.out.println("Class not found exception occurred in window creation");
         } catch (IllegalAccessException ex) {
             //ex.printStackTrace();
-             System.out.println("Illegal access exception occurred in window creation");
+            System.out.println("Illegal access exception occurred in window creation");
         } catch (IllegalArgumentException ex) {
-           // ex.printStackTrace();
+            // ex.printStackTrace();
             System.out.println("Illegal argument exception occurred in window creation");
         } catch (InvocationTargetException ex) {
-           // ex.printStackTrace();
+            // ex.printStackTrace();
             System.out.println("Target invocation exception occurred in window creation");
         }
     }
@@ -264,6 +281,7 @@ class Translucent extends JPanel implements ActionListener {
 }
 
 class ResponseData {
+
     String title;
     String Snippet;
     String docId;
@@ -289,6 +307,19 @@ class TimeStamp {
         hour = time[0];
         minute = time[1];
         second = time[2];
+    }
+
+    public int getTimeDifference(TimeStamp t) {
+        if (!this.year.equals(t.year) || !this.day.equals(t.day) || !this.month.equals(t.month)) {
+            return 24 * 60 * 60;
+        } else {
+
+            int thisTime = Integer.parseInt(this.hour) * 3600 + Integer.parseInt(this.minute) * 60 + Integer.parseInt(this.second);
+
+            int thatTime = Integer.parseInt(t.hour) * 3600 + Integer.parseInt(t.minute) * 60 + Integer.parseInt(t.second);
+            int diff = thisTime - thatTime;
+            return diff;
+        }
     }
 
     public String toString() {
@@ -350,7 +381,7 @@ public class ReadKeyStrokeLog {
         Properties prop = new Properties();
         prop.load(new FileReader(new File("init.properties")));
         keyLogFile = prop.getProperty("KeyLogFile");
-        imagePath= prop.getProperty("img");
+        imagePath = prop.getProperty("img");
         clickPath = prop.getProperty("click");
         wordList = new ArrayList<>();
     }
@@ -376,9 +407,6 @@ public class ReadKeyStrokeLog {
         int count = 0;
         HashSet<String> words = new HashSet<>();
         HashMap<String, wordObject> wordMap = new HashMap<>();
-        ArrayList<TimeStamp> times = new ArrayList<>();
-        ArrayList<String> windowTitle = new ArrayList<>();
-        ArrayList<String> app = new ArrayList<>();
         String prevLine = "";
         try {
             object = new ReversedLinesFileReader(new File(keyLogFile));
@@ -402,13 +430,37 @@ public class ReadKeyStrokeLog {
                     }
                     String st[] = null;
                     if (wob != null) {
-                        st = wob.typed_words.split("\\s+");
+                        if (wob.typed_words.trim().length() > 5) {
+
+                            st = wob.typed_words.split("\\s+");
+                            for (String s : st) {
+                                if (s.length() > 2 && s.length() <= 15) {
+                                    if (!wordMap.containsKey(s)) {
+                                        wordObject wobb = new wordObject();
+                                        wobb.word = s;
+                                        wobb.tf = 1;
+                                        wobb.timestamp = wob.timeStamp;
+                                        wordMap.put(s, wobb);
+                                    } else {
+                                        wordObject wobb = wordMap.get(s);
+                                        wobb.tf++;
+                                        wordMap.put(s, wobb);
+                                    }
+                                }
+                            }
+                        }
+                        if (wob.windowTitle.equals("WriteTopic") || wob.windowTitle.equals(" Clueweb Search Interface")) {
+                            wob.windowTitle = "NA";
+                        }
+                        st = wob.windowTitle.split("\\s+");
+
                         for (String s : st) {
-                            if (s.length() > 2) {
+                            if (s.length() > 2 && s.length() <= 16) {
                                 if (!wordMap.containsKey(s)) {
                                     wordObject wobb = new wordObject();
                                     wobb.word = s;
                                     wobb.tf = 1;
+                                    wobb.timestamp = wob.timeStamp;
                                     wordMap.put(s, wobb);
                                 } else {
                                     wordObject wobb = wordMap.get(s);
@@ -420,10 +472,10 @@ public class ReadKeyStrokeLog {
                     } else {
                         prevLine += line + " ";
                     }
-
+                    wob = null;
                     count++;
                 }
-                if (count == 200) {
+                if (count == 50) {
                     break;
                 }
             }
@@ -441,31 +493,36 @@ public class ReadKeyStrokeLog {
             String st = (String) it.next();
             values.add(wordMap.get(st));
         }
-
+        Collections.sort(values, Collections.reverseOrder());
         return values;
     }
 
-    public void throwNotification(ArrayList<wordObject> words, int num, int numDoc) throws MalformedURLException, IOException, Exception {
+    public void throwNotification(ArrayList<wordObject> words, ArrayList<relObject> relWords, int num, int numDoc) throws MalformedURLException, IOException, Exception {
 
         String notitficationLine = "";
-        Collections.sort(words,Collections.reverseOrder());
+        Collections.sort(relWords, Collections.reverseOrder());
         int count = 0;
-        for (int i = 0; i < words.size(); i++) {
-            String word = words.get(i).word;
+        for (int i = 0; i < relWords.size(); i++) {
+            String word = relWords.get(i).word;
             ArrayList<ResponseData> r = createRankedListUsingClueweb(word, 5);
             if (r.size() > 0) {
-                notitficationLine += " " + words.get(i).word;
+                notitficationLine += " " + relWords.get(i).word;
                 count++;
             }
             if (count == num) {
                 break;
             }
         }
-        System.out.println("Proactive Query: "+notitficationLine);
+        for (int i = 0; i < 3; i++) {
+
+            notitficationLine += " " + words.get(i).word;
+        }
+
+        System.out.println("Proactive Query: " + notitficationLine);
         ArrayList<ResponseData> resps = createRankedListUsingClueweb(notitficationLine, numDoc);
         ArrayList<ResponseData> notifyList = new ArrayList<>();
         if (resps.size() > 0) {
-            if(numDoc > resps.size()){
+            if (numDoc > resps.size()) {
                 numDoc = resps.size();
             }
             for (int i = 0; i < numDoc; i++) {
@@ -527,19 +584,56 @@ public class ReadKeyStrokeLog {
 
     }
 
-    public String processHtml(String html, String stopFile) throws IOException, SAXException, TikaException, Exception {
+    public HashMap<String, relObject> processHtml(String html, String stopFile) throws IOException, SAXException, TikaException, Exception {
         InputStream input = new ByteArrayInputStream(html.getBytes(StandardCharsets.UTF_8));
         ContentHandler handler = new BodyContentHandler(-1);
         Metadata metadata = new Metadata();
         new HtmlParser().parse(input, handler, metadata, new ParseContext());
         String title = metadata.get("title");
-        String text = preprocessText(html, false, stopFile);
-        text = title + "######sssss" + text;
-        System.out.println(title);
-        return text;
+        System.out.println("Doc Read " + title);
+        HashMap<String, relObject> docStat = preprocessText(html, false, stopFile);
+        String[] words = title.split("\\s+");
+        for (String s : words) {
+            relObject wob = new relObject();
+            wob.word = s;
+            wob.tf = docStat.get("###").tf+50;
+            docStat.put(s, wob);
+        }
+        docStat.remove("###");
+        return docStat;
     }
 
-    String preprocessText(String html, boolean title, String stopFile) throws IOException, Exception {
+    public String processToken(String word) {
+
+        word = word.replaceAll(";", "");
+        word = word.replaceAll(",", "");
+        word = word.replaceAll("style", "");
+        word = word.replaceAll("div", "");
+        word = word.replaceAll("span", "");
+        word = word.replaceAll("script", "");
+        word = word.replaceAll("html", "");
+        word = word.replaceAll("[0-9]*", "");
+        word = word.replaceAll(":", "");
+        word = word.replaceAll("\\.", " ");
+        word = word.replaceAll("_", " ");
+        word = word.replaceAll("href", "");
+        word = word.replaceAll("http", "");
+        word = word.replaceAll("class", "");
+        word = word.replaceAll("ww*", "");
+        word = word.trim();
+        if (word.length() <= 2 || word.length() > 20) {
+            word = "";
+        }
+        try {
+            Double number = Double.parseDouble(word);
+            word = "";
+        } catch (Exception e1) {
+
+        }
+        return word;
+    }
+
+    HashMap<String, relObject> preprocessText(String html, boolean title, String stopFile) throws IOException, Exception {
 
         int freqCutoffThreshold = title ? 1 : -1;
         HashMap<String, Integer> tfMap = new HashMap<>();
@@ -549,6 +643,7 @@ public class ReadKeyStrokeLog {
         TokenStream stream = constructAnalyzer(stopFile).tokenStream("field", new StringReader(html));
         CharTermAttribute termAtt = stream.addAttribute(CharTermAttribute.class);
 
+        int maxFreq = 0;
         stream.reset();
         while (stream.incrementToken()) {
             String token = termAtt.toString();
@@ -557,27 +652,39 @@ public class ReadKeyStrokeLog {
                 tf = new Integer(0);
             }
             tf++;
+            if (maxFreq < tf) {
+                maxFreq = tf;
+            }
             tfMap.put(token, tf);
         }
         stream.end();
         stream.close();
 
+        HashMap<String, relObject> relWords = new HashMap<>();
         for (Map.Entry<String, Integer> e : tfMap.entrySet()) {
             String word = e.getKey();
-            int tf = e.getValue();
-            if (tf >= freqCutoffThreshold) {
-                for (int i = 0; i < tf; i++) { // print this word tf times... word order doesn't matter!
-                    buff.append(word).append(" ");
-                }
+            word = processToken(word);
+            if (word.equals("")) {
+                tfMap.remove(word);
+                continue;
             }
+            relObject rob = new relObject();
+            rob.word = word;
+            rob.tf = e.getValue();
+            int tf = e.getValue();
+            relWords.put(word, rob);
         }
-        return buff.toString();
+        relObject rob = new relObject();
+        rob.word = "";
+        rob.tf = maxFreq;
+        relWords.put("###", rob);
+        return relWords;
     }
 
-    public ArrayList<wordObject> readRelDocs(String relDocPath, String stopFile) throws FileNotFoundException, IOException, TikaException, Exception {
+    public ArrayList<relObject> readRelDocs(String relDocPath, String stopFile) throws FileNotFoundException, IOException, TikaException, Exception {
         File dir = new File(relDocPath);
         File[] directoryListing = dir.listFiles();
-        HashMap<String, wordObject> wordMap = new HashMap<>();
+        HashMap<String, relObject> relMap = new HashMap<>();
         for (File f : directoryListing) {
             if (f.getName().endsWith(".html")) {
                 String line = "";
@@ -589,45 +696,17 @@ public class ReadKeyStrokeLog {
                     htmlText += line;
                     line = br.readLine();
                 }
-                String text = processHtml(htmlText, stopFile);
-                String body[] = text.split("######sssss");
-                String[] words = body[1].split("\\s+");
-                int maxFreq = 0;
-                for (String s : words) {
-                    if (!s.contains("_") && !s.contains(".")) {
-                        if (wordMap.containsKey(s)) {
-                            wordObject wob = wordMap.get(s);
-                            wob.tf++;
-                            if (maxFreq < wob.tf) {
-                                maxFreq = wob.tf;
-                            }
-                            wordMap.put(s, wob);
-                        } else {
-                            wordObject wob = new wordObject();
-                            wob.word = s;
-                            wob.tf = 1;
-                            if (maxFreq < wob.tf) {
-                                maxFreq = wob.tf;
-                            }
-                            wordMap.put(s, wob);
-                        }
-                    }
-                }
-                words = body[0].split("\\s+");
-                for (String s : words) {
-                    wordObject wob = new wordObject();
-                    wob.word = s;
-                    wob.tf = maxFreq + 50;
-                    wordMap.put(s, wob);
-                }
+                String title = "";
+                relMap = processHtml(htmlText, stopFile);
             }
         }
 
-        Iterator it = wordMap.keySet().iterator();
-        ArrayList<wordObject> values = new ArrayList<>();
+        Iterator it = relMap.keySet().iterator();
+        ArrayList<relObject> values = new ArrayList<>();
         while (it.hasNext()) {
             String st = (String) it.next();
-            values.add(wordMap.get(st));
+            System.out.println(st + ":" + relMap.get(st).tf);
+            values.add(relMap.get(st));
         }
         return values;
     }
@@ -711,7 +790,7 @@ public class ReadKeyStrokeLog {
     public static void main(String[] args) throws IOException, InterruptedException, Exception {
 
         ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
-        // rkl.addKeyword();
-        //HashSet<String> words = rkl.reverseKeyStrokeFileRead();
+        rkl.addKeyword();
+        rkl.readRelDocs("C:/Users/Procheta/Desktop/relFolder/", "C:/Users/Procheta/Documents/NetBeansProjects/DesktopTracker/stop.txt");
     }
 }

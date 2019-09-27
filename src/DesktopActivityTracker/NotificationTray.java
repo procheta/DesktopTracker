@@ -52,26 +52,27 @@ public class NotificationTray {
                 createAndShowGUI();
             }
         });
-       /* ProcessTrigger pr = new ProcessTrigger();
+        /* ProcessTrigger pr = new ProcessTrigger();
         String processPath = prop.getProperty("process");
         pr.loadProcess(processPath);
         System.out.println("Process Loaded");*/
-       
+
         FileAccess fa = new FileAccess();
         int numDoc = Integer.parseInt(prop.getProperty("numDoc"));
         int num = Integer.parseInt(prop.getProperty("numQ"));
         int interval = Integer.parseInt(prop.getProperty("interval"));
-       
+
+        System.out.println("Initializing user's prior knowledge state...");
+        ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
+        rkl.addKeyword();
+        ArrayList<relObject> relWords = rkl.readRelDocs(prop.getProperty("relFolder"), prop.getProperty("stop"));
+
         while (true) {
-            fa.check(prop.getProperty("accessFolder"),prop.getProperty("AccessLog"));
+            fa.check(prop.getProperty("accessFolder"), prop.getProperty("AccessLog"));
             System.out.println("Access Folder checked");
-            ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
-            rkl.addKeyword();
             ArrayList<wordObject> words = (ArrayList<wordObject>) rkl.reverseKeyStrokeFileRead();
-            ArrayList<wordObject> relWords =rkl.readRelDocs(prop.getProperty("relFolder"), prop.getProperty("stop"));
-            words.addAll(relWords);
             System.out.println("Activity log Read Complete");
-            rkl.throwNotification(words,num,numDoc);
+            rkl.throwNotification(words, relWords, num, numDoc);
             Thread.sleep(interval);
         }
     }
