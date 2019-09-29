@@ -113,13 +113,19 @@ class wordObject implements Comparable<wordObject> {
 class relObject implements Comparable<relObject> {
 
     String word;
-    int tf;
+    double tf;
     DesktopActivityTracker.TimeStamp timestamp;
 
     @Override
     public int compareTo(relObject o) {
 
-        return (this.tf - o.tf);
+        if (this.tf < o.tf) {
+            return -1;
+        } else if (this.tf > o.tf) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
 
@@ -179,45 +185,51 @@ class Translucent extends JPanel implements ActionListener {
         return dimg;
     }
 
-    public void notificationTrayCreation(ArrayList<ResponseData> resps, int numNotification, String imagePath, String clickLogPath) throws IOException {
-        FontMetrics metrics = getFontMetrics(getFont());
-        int width = metrics.stringWidth(resps.get(0).Snippet);
-        int width1 = metrics.stringWidth(resps.get(0).docId);
+    public void notificationTrayCreation(ArrayList<ResponseData> resps, int numNotification, String imagePath, String clickLogPath, String closeIconPath) throws IOException {
+
         final JFrame f = new JFrame();
         f.setUndecorated(true);
         f.setSize(500, 300);
-        f.setLocation(800, 300);
+        f.setLocation(860, 400);
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setAlwaysOnTop(true);
 
         int d = 0;
         JPanel p = new JPanel();
         p.setLayout(null);
-        p.setBackground(new Color(210, 219, 230));
+        p.setBackground(new Color(154, 150, 149));
 
         Image img = resizeImage(imagePath);
         ImageIcon icon = new ImageIcon(img);
         JLabel l1 = new JLabel(icon);
-        l1.setBounds(20, 30, 90, 50);
+        l1.setBounds(10, 10, 90, 50);
         JLabel l2 = new JLabel();
-        l2.setText("Proactive Agent");
-        l2.setBounds(100, 30, 90, 50);
+        l2.setText("Hi, I am your proactive agent!!");
+        l2.setForeground(Color.white);
+        l2.setBounds(75, 10, 190, 50);
+
+        JLabel l3 = new JLabel();
+        l3.setText("You may find following documents useful for you task..");
+        l3.setForeground(Color.white);
+        l3.setBounds(10, 50, 350, 50);
         p.add(l1);
         p.add(l2);
+        p.add(l3);
         f.add(p);
 
-        int d1 = 20;
+        int d1 = 30;
         if (numNotification > resps.size()) {
             numNotification = resps.size();
         }
-        JButton b4 = new JButton("X");
+        Image closeImg = resizeImage(closeIconPath);
+        ImageIcon closeIcon = new ImageIcon(closeImg);
+        JButton b4 = new JButton(closeIcon);
         b4.setBackground(new Color(210, 219, 230));
         b4.setForeground(Color.BLACK);
         b4.setBorderPainted(false);
-        b4.setText("CLOSE");
 
-        b4.setBorder(BorderFactory.createEmptyBorder());
-        b4.setBounds(350, 30, 120, 30);
+        //b4.setBorder(BorderFactory.createEmptyBorder());
+        b4.setBounds(450, 30, 40, 35);
         p.add(b4);
         final String clickPath = clickLogPath;
         b4.addActionListener(new ActionListener() {
@@ -239,6 +251,9 @@ class Translucent extends JPanel implements ActionListener {
         });
 
         for (int i = 0; i < numNotification; i++) {
+            FontMetrics metrics = getFontMetrics(getFont());
+            int width = metrics.stringWidth(resps.get(0).Snippet);
+            int width1 = metrics.stringWidth(resps.get(i).title);
             final CustomButton b3 = new CustomButton(resps.get(i).docId);
             b3.setOpaque(false);
             b3.setContentAreaFilled(false);
@@ -249,13 +264,48 @@ class Translucent extends JPanel implements ActionListener {
             b3.setFont(ff);
             Map attributes = b3.getFont().getAttributes();
             attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-            b3.setText(resps.get(i).title);
+            String title = "";
+            String tokens[] = resps.get(i).title.split("\\s+");
+            if (tokens.length > 7) {
+                System.out.println(resps.get(i).title);
+                for (int j = 0; j < 8; j++) {
+                    title += tokens[j] + " ";
+                }
+                width1 = metrics.stringWidth(title);
+                b3.setBounds(20, 100 + d, width1 + 180, 20);
+            } else {
+                title = resps.get(i).title;
+                b3.setBounds(20, 100 + d, width1 + 180, 20);
+            }
+            b3.setText(title);
             JLabel l = new JLabel();
             l.setText(resps.get(i).Snippet);
+
             l.setFont(new Font("Courier New", Font.ITALIC, 12));
             l.setForeground(Color.BLACK);
-            l.setBounds(20, 100 + d1, width + 50, 30);
-            d1 = d1 + 40;
+            tokens = resps.get(i).Snippet.split("\\s+");
+            String snippet = "<html>";
+            String text = "";
+            if (tokens.length > 8) {
+                for (int j = 0; j < tokens.length; j++) {
+                    if (j % 8 == 0 && j > 0) {
+                        snippet += tokens[j] + "<br>";
+                    } else {
+                        snippet += tokens[j] + " ";
+                    }
+                }
+                for (int j = 0; j < 8; j++) {
+                    text += tokens[j] + " ";
+                }
+                snippet += "</html>";
+                width = metrics.stringWidth(text);
+            } else {
+                width = metrics.stringWidth(resps.get(i).Snippet);
+                snippet = resps.get(i).Snippet;
+            }
+            l.setBounds(20, 100 + d + 20, width + 50, 40);
+            l.setText(snippet);
+            d1 = d1 + 90;
             b3.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
@@ -274,7 +324,8 @@ class Translucent extends JPanel implements ActionListener {
             });
             p.add(b3);
             p.add(l);
-            d = d + 40;
+            // d = d + 60;
+            d = d + 20 + 40 + 10;
         }
         f.setVisible(true);
     }
@@ -375,7 +426,9 @@ public class ReadKeyStrokeLog {
     ArrayList<String> wordList;
     String keyLogFile;
     String imagePath;
+    String closeIconpath;
     String clickPath;
+    double freqThreshold;
 
     public ReadKeyStrokeLog() throws FileNotFoundException, IOException {
         Properties prop = new Properties();
@@ -384,6 +437,8 @@ public class ReadKeyStrokeLog {
         imagePath = prop.getProperty("img");
         clickPath = prop.getProperty("click");
         wordList = new ArrayList<>();
+        freqThreshold = Double.parseDouble(prop.getProperty("relThresh"));
+        closeIconpath = prop.getProperty("close");
     }
 
     public void addKeyword() {
@@ -497,29 +552,48 @@ public class ReadKeyStrokeLog {
         return values;
     }
 
+    public double computeIdf(String word) throws MalformedURLException, IOException {
+
+        double idf = 0;
+        URL url = new URL("http://clueweb.adaptcentre.ie/CluwebDocFreq/?word=" + URLEncoder.encode(word, "UTF-8"));
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+            String all = "";
+            String line;
+            while ((line = in.readLine()) != null) {
+                all += line;
+            }
+            idf = Double.parseDouble(all.substring(all.indexOf("</title>") + 8, all.indexOf("</head>")).trim());
+            if (idf != 0) {
+                idf = Math.log(13719681 / idf);
+            }
+        } catch (Exception e) {
+        }
+
+        return idf;
+    }
+
     public void throwNotification(ArrayList<wordObject> words, ArrayList<relObject> relWords, int num, int numDoc) throws MalformedURLException, IOException, Exception {
 
         String notitficationLine = "";
         Collections.sort(relWords, Collections.reverseOrder());
         int count = 0;
-        for (int i = 0; i < relWords.size(); i++) {
+        /*for (int i = 0; i < relWords.size(); i++) {
             String word = relWords.get(i).word;
-            ArrayList<ResponseData> r = createRankedListUsingClueweb(word, 5);
-            if (r.size() > 0) {
-                notitficationLine += " " + relWords.get(i).word;
-                count++;
-            }
+            notitficationLine += " " + relWords.get(i).word+":5";
+            count++;
             if (count == num) {
                 break;
             }
-        }
+        }*/
         for (int i = 0; i < 3; i++) {
 
-            notitficationLine += " " + words.get(i).word;
+            notitficationLine += " " + words.get(i).word+":2";
         }
 
         System.out.println("Proactive Query: " + notitficationLine);
         ArrayList<ResponseData> resps = createRankedListUsingClueweb(notitficationLine, numDoc);
+        //ArrayList<ResponseData> resps = createRankedListUsingClueweb("oversea:6 india:5 govern:4 param:1", numDoc);
         ArrayList<ResponseData> notifyList = new ArrayList<>();
         if (resps.size() > 0) {
             if (numDoc > resps.size()) {
@@ -529,7 +603,7 @@ public class ReadKeyStrokeLog {
                 notifyList.add(resps.get(i));
             }
             Translucent t = new Translucent();
-            t.notificationTrayCreation(notifyList, numDoc, imagePath, clickPath);
+            t.notificationTrayCreation(notifyList, numDoc, imagePath, clickPath, closeIconpath);
         }
     }
 
@@ -538,29 +612,34 @@ public class ReadKeyStrokeLog {
         String param1 = s;
         ArrayList<String> docIdList = new ArrayList<>();
         ArrayList<ResponseData> resps = new ArrayList<ResponseData>();
-        URL url = new URL("http://clueweb.adaptcentre.ie/WebSearcher/search?query=" + URLEncoder.encode(param1, charset));
+        //URL url = new URL("http://clueweb.adaptcentre.ie/WebSearcher/search?query=" + URLEncoder.encode(param1, charset));
+        URL url = new URL("http://clueweb.adaptcentre.ie/CluwebDocFreq/Query.jsp?query=" + URLEncoder.encode(param1, charset));
+
+        String all = "";
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-            String all = "";
             String line;
             while ((line = in.readLine()) != null) {
                 all += line;
             }
+            all = all.substring(all.indexOf("["), all.indexOf("</body>")).trim();
+            //System.out.println(all);
             JSONObject jobJSONObject = new JSONObject();
             JSONParser jsonParser = new JSONParser();
             JSONArray jsonArray = (JSONArray) jsonParser.parse(all);
             int count = 0;
-            if (num > jsonArray.size() - 1) {
-                num = jsonArray.size() - 1;
+            if (num > jsonArray.size()) {
+                num = jsonArray.size();
             }
+            System.out.println(jsonArray.size());
             for (int j1 = 0; j1 < num; j1++) {
                 ResponseData rpd = new ResponseData();
                 JSONArray job = (JSONArray) (jsonArray.get(j1));
                 JSONObject job1 = (JSONObject) job.get(0);
                 String Snippet = (String) job1.get("snippet");
                 String title = (String) job1.get("title");
-                Snippet = Snippet.replaceAll("n", "");
-                Snippet = Snippet.replaceAll("t", "");
+                Snippet = Snippet.replaceAll("\n", "");
+                Snippet = Snippet.replaceAll("\t", "");
                 Snippet = Snippet.replaceAll("\\\\", "");
                 Snippet = Snippet.replaceAll("<B>", "");
                 Snippet = Snippet.replaceAll("</B>", "");
@@ -572,7 +651,9 @@ public class ReadKeyStrokeLog {
             }
         } catch (Exception e) {
             System.out.println("Exception occurred while calling Clueweb Search API");
-            //e.printStackTrace();
+            System.out.println(param1);
+            System.out.println("All html " + all);
+            e.printStackTrace();
         }
         return resps;
     }
@@ -591,15 +672,20 @@ public class ReadKeyStrokeLog {
         new HtmlParser().parse(input, handler, metadata, new ParseContext());
         String title = metadata.get("title");
         System.out.println("Doc Read " + title);
-        HashMap<String, relObject> docStat = preprocessText(html, false, stopFile);
-        String[] words = title.split("\\s+");
-        for (String s : words) {
+        HashMap<String, relObject> docStat = preprocessText(html, stopFile);
+
+        CharArraySet stopList = StopFilter.makeStopSet(buildStopwordList(stopFile));
+        TokenStream stream = constructAnalyzer(stopFile).tokenStream("field", new StringReader(title));
+        CharTermAttribute termAtt = stream.addAttribute(CharTermAttribute.class);
+        stream.reset();
+        while (stream.incrementToken()) {
+            String token = termAtt.toString();
+            token = processToken(token);
             relObject wob = new relObject();
-            wob.word = s;
-            wob.tf = docStat.get("###").tf+50;
-            docStat.put(s, wob);
+            wob.word = token;
+            wob.tf = 1.0;
+            docStat.put(token, wob);
         }
-        docStat.remove("###");
         return docStat;
     }
 
@@ -633,20 +719,25 @@ public class ReadKeyStrokeLog {
         return word;
     }
 
-    HashMap<String, relObject> preprocessText(String html, boolean title, String stopFile) throws IOException, Exception {
+    HashMap<String, relObject> preprocessText(String html, String stopFile) throws IOException, Exception {
 
-        int freqCutoffThreshold = title ? 1 : -1;
+        int freqCutoffThreshold = -1;
         HashMap<String, Integer> tfMap = new HashMap<>();
         StringBuffer buff = new StringBuffer();
         CharArraySet stopList = StopFilter.makeStopSet(buildStopwordList(stopFile));
-
         TokenStream stream = constructAnalyzer(stopFile).tokenStream("field", new StringReader(html));
         CharTermAttribute termAtt = stream.addAttribute(CharTermAttribute.class);
 
         int maxFreq = 0;
         stream.reset();
+        double docLength = 0;
         while (stream.incrementToken()) {
             String token = termAtt.toString();
+            token = processToken(token);
+            docLength++;
+            if (token.equals("")) {
+                continue;
+            }
             Integer tf = tfMap.get(token);
             if (tf == null) {
                 tf = new Integer(0);
@@ -663,27 +754,20 @@ public class ReadKeyStrokeLog {
         HashMap<String, relObject> relWords = new HashMap<>();
         for (Map.Entry<String, Integer> e : tfMap.entrySet()) {
             String word = e.getKey();
-            word = processToken(word);
-            if (word.equals("")) {
-                tfMap.remove(word);
-                continue;
-            }
             relObject rob = new relObject();
             rob.word = word;
-            rob.tf = e.getValue();
-            int tf = e.getValue();
-            relWords.put(word, rob);
+            rob.tf = e.getValue() / docLength;
+            if (rob.tf > freqThreshold) {
+                relWords.put(word, rob);
+            }
         }
-        relObject rob = new relObject();
-        rob.word = "";
-        rob.tf = maxFreq;
-        relWords.put("###", rob);
         return relWords;
     }
 
     public ArrayList<relObject> readRelDocs(String relDocPath, String stopFile) throws FileNotFoundException, IOException, TikaException, Exception {
         File dir = new File(relDocPath);
         File[] directoryListing = dir.listFiles();
+
         HashMap<String, relObject> relMap = new HashMap<>();
         for (File f : directoryListing) {
             if (f.getName().endsWith(".html")) {
@@ -697,17 +781,25 @@ public class ReadKeyStrokeLog {
                     line = br.readLine();
                 }
                 String title = "";
-                relMap = processHtml(htmlText, stopFile);
+                relMap.putAll(processHtml(htmlText, stopFile));
             }
         }
 
         Iterator it = relMap.keySet().iterator();
         ArrayList<relObject> values = new ArrayList<>();
+
         while (it.hasNext()) {
             String st = (String) it.next();
-            System.out.println(st + ":" + relMap.get(st).tf);
             values.add(relMap.get(st));
+
         }
+        Collections.sort(values, Collections.reverseOrder());
+        for (int i = 0; i < values.size(); i++) {
+
+            // System.out.println(values.get(i).word + ":" + values.get(i).tf);
+            values.get(i).tf *= computeIdf(values.get(i).word);
+        }
+        Collections.sort(values, Collections.reverseOrder());
         return values;
     }
 
