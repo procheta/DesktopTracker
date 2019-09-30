@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,20 +31,28 @@ public class FileAccess {
             if (Integer.parseInt(currTimeSplit[0]) < (Integer.parseInt(fileTimeSplit[0]) + 1)) {
                 return -1;
             } else if ((Integer.parseInt(currTimeSplit[1]) - Integer.parseInt(fileTimeSplit[1])) >= 0 && (Integer.parseInt(currTimeSplit[1]) - Integer.parseInt(fileTimeSplit[1])) < 3) {
-                return 1;
+                int thisTime = Integer.parseInt(currTimeSplit[0]) * 3600 + Integer.parseInt(currTimeSplit[1]) * 60 + Integer.parseInt(currTimeSplit[2]);
+                int thatTime = (Integer.parseInt(fileTimeSplit[0]) + 1) * 3600 + Integer.parseInt(fileTimeSplit[1]) * 60 + Integer.parseInt(fileTimeSplit[2]);
+                int diff = thisTime - thatTime;
+                if (diff <= (5 * 60 * 60)) {
+                    return 1;
+                } else {
+                    return -1;
+                }
             } else {
                 return -1;
             }
         } catch (Exception e) {
+            System.out.println("Exception occurred while computing time difference");
             return -1;
         }
     }
 
-    public void check(String folderpath, String writeFile) throws IOException, InterruptedException {
+    public ArrayList<String> check(String folderpath, String writeFile) throws IOException, InterruptedException {
         Calendar c = Calendar.getInstance();
         File dir = new File(folderpath);
         File[] directoryListing = dir.listFiles();
-
+        ArrayList<String> filesAccessed = new ArrayList<>();
         String currTime = c.getTime().toString();
         FileWriter fw = new FileWriter(new File(writeFile), true);
         BufferedWriter bw = new BufferedWriter(fw);
@@ -56,10 +65,11 @@ public class FileAccess {
             if (flag == 1) {
                 bw.write(f.getAbsolutePath() + "/" + f.getName() + " " + fatr.lastAccessTime().toString());
                 bw.newLine();
+                filesAccessed.add(f.getAbsolutePath() + "/" + f.getName());
             }
         }
         bw.close();
-
+        return filesAccessed;
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {

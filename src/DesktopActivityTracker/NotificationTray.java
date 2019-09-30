@@ -66,13 +66,20 @@ public class NotificationTray {
         ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
         rkl.addKeyword();
         ArrayList<relObject> relWords = rkl.readRelDocs(prop.getProperty("relFolder"), prop.getProperty("stop"));
-
+        String prevQuery=""; 
+        
         while (true) {
-            fa.check(prop.getProperty("accessFolder"), prop.getProperty("AccessLog"));
+            ArrayList<String> filesAccessed = fa.check(prop.getProperty("accessFolder"), prop.getProperty("AccessLog"));
             System.out.println("Access Folder checked");
-            ArrayList<wordObject> words = (ArrayList<wordObject>) rkl.reverseKeyStrokeFileRead();
-            System.out.println("Activity log Read Complete");
-            rkl.throwNotification(words, relWords, num, numDoc);
+            ArrayList<wordObject> words = null;
+            try {
+                words = (ArrayList<wordObject>) rkl.reverseKeyStrokeFileRead();
+                System.out.println("Activity log Read Complete");
+            } catch (Exception e) {
+                System.out.println("Exception in reverse activity log reading");
+            }
+            String currQuery = rkl.throwNotification(words, relWords, num, numDoc,prevQuery);
+            prevQuery = currQuery;
             Thread.sleep(interval);
         }
     }

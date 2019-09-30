@@ -303,6 +303,7 @@ class Translucent extends JPanel implements ActionListener {
                 width = metrics.stringWidth(resps.get(i).Snippet);
                 snippet = resps.get(i).Snippet;
             }
+            //System.out.println(snippet);
             l.setBounds(20, 100 + d + 20, width + 50, 40);
             l.setText(snippet);
             d1 = d1 + 90;
@@ -429,6 +430,7 @@ public class ReadKeyStrokeLog {
     String closeIconpath;
     String clickPath;
     double freqThreshold;
+    int activityLogThreshold;
 
     public ReadKeyStrokeLog() throws FileNotFoundException, IOException {
         Properties prop = new Properties();
@@ -439,6 +441,7 @@ public class ReadKeyStrokeLog {
         wordList = new ArrayList<>();
         freqThreshold = Double.parseDouble(prop.getProperty("relThresh"));
         closeIconpath = prop.getProperty("close");
+        activityLogThreshold = Integer.parseInt(prop.getProperty("activityLogThreshold"));
     }
 
     public void addKeyword() {
@@ -530,7 +533,7 @@ public class ReadKeyStrokeLog {
                     wob = null;
                     count++;
                 }
-                if (count == 50) {
+                if (count == activityLogThreshold) {
                     break;
                 }
             }
@@ -546,7 +549,11 @@ public class ReadKeyStrokeLog {
         ArrayList<wordObject> values = new ArrayList<>();
         while (it.hasNext()) {
             String st = (String) it.next();
-            values.add(wordMap.get(st));
+            //System.out.println(st + " " + wordMap.get(st).timestamp);
+            double d = computeIdf(st);
+            if (d > 0) {
+                values.add(wordMap.get(st));
+            }
         }
         Collections.sort(values, Collections.reverseOrder());
         return values;
@@ -573,26 +580,37 @@ public class ReadKeyStrokeLog {
         return idf;
     }
 
-    public void throwNotification(ArrayList<wordObject> words, ArrayList<relObject> relWords, int num, int numDoc) throws MalformedURLException, IOException, Exception {
+    public String throwNotification(ArrayList<wordObject> words, ArrayList<relObject> relWords, int num, int numDoc, String prevQuery) throws MalformedURLException, IOException, Exception {
 
         String notitficationLine = "";
         Collections.sort(relWords, Collections.reverseOrder());
         int count = 0;
-        /*for (int i = 0; i < relWords.size(); i++) {
+        for (int i = 0; i < relWords.size(); i++) {
             String word = relWords.get(i).word;
-            notitficationLine += " " + relWords.get(i).word+":5";
+            notitficationLine += " " + relWords.get(i).word + ":2";
             count++;
             if (count == num) {
                 break;
             }
-        }*/
-        for (int i = 0; i < 3; i++) {
 
-            notitficationLine += " " + words.get(i).word+":2";
+        }
+        if (words != null) {
+            for (int i = 0; i < 3; i++) {
+                notitficationLine += " " + words.get(i).word + ":5";
+            }
         }
 
         System.out.println("Proactive Query: " + notitficationLine);
+        if (prevQuery.equals(notitficationLine)) {
+            System.out.println("Same query formulated...");
+            return notitficationLine;
+        }
         ArrayList<ResponseData> resps = createRankedListUsingClueweb(notitficationLine, numDoc);
+        System.out.println("Clueweb results returned for proactive query!!");
+        if (resps.size() == 0) {
+            System.out.println("Nothing found from the proactive query!!");
+            return notitficationLine;
+        }
         //ArrayList<ResponseData> resps = createRankedListUsingClueweb("oversea:6 india:5 govern:4 param:1", numDoc);
         ArrayList<ResponseData> notifyList = new ArrayList<>();
         if (resps.size() > 0) {
@@ -605,6 +623,7 @@ public class ReadKeyStrokeLog {
             Translucent t = new Translucent();
             t.notificationTrayCreation(notifyList, numDoc, imagePath, clickPath, closeIconpath);
         }
+        return notitficationLine;
     }
 
     public ArrayList<ResponseData> createRankedListUsingClueweb(String s, int num) throws UnsupportedEncodingException, MalformedURLException, IOException {
@@ -631,7 +650,6 @@ public class ReadKeyStrokeLog {
             if (num > jsonArray.size()) {
                 num = jsonArray.size();
             }
-            System.out.println(jsonArray.size());
             for (int j1 = 0; j1 < num; j1++) {
                 ResponseData rpd = new ResponseData();
                 JSONArray job = (JSONArray) (jsonArray.get(j1));
@@ -652,7 +670,6 @@ public class ReadKeyStrokeLog {
         } catch (Exception e) {
             System.out.println("Exception occurred while calling Clueweb Search API");
             System.out.println(param1);
-            System.out.println("All html " + all);
             e.printStackTrace();
         }
         return resps;
