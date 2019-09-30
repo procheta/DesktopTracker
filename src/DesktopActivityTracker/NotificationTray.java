@@ -60,26 +60,49 @@ public class NotificationTray {
 
         FileAccess fa = new FileAccess();
         int numDoc = Integer.parseInt(prop.getProperty("numDoc"));
-        int num = Integer.parseInt(prop.getProperty("numQ"));
+        int num = Integer.parseInt(prop.getProperty("relLogQueryWord"));
+        int numR = Integer.parseInt(prop.getProperty("readQueryWord"));
         int interval = Integer.parseInt(prop.getProperty("interval"));
+        String os = prop.getProperty("OS");
 
         System.out.println("Initializing user's prior knowledge state...");
         ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
         rkl.addKeyword();
-        ArrayList<relObject> relWords = rkl.readRelDocs(prop.getProperty("relFolder"), prop.getProperty("stop"));
-        String prevQuery=""; 
-        
+        File dir = new File(prop.getProperty("relFolder"));
+        File[] directoryListing = dir.listFiles();
+        ArrayList<String> existingFile = new ArrayList<>();
+        for (File f : directoryListing) {
+            String s = f.getAbsolutePath() + "/" + f.getName();
+            existingFile.add(s);
+        }
+        ArrayList<relObject> relWords = rkl.readRelDocsForFolder(prop.getProperty("relFolder"), prop.getProperty("stop"));
+        String prevQuery = "";
+
         while (true) {
             ArrayList<String> filesAccessed = fa.check(prop.getProperty("accessFolder"), prop.getProperty("AccessLog"));
+            ArrayList<relObject> readWords = new ArrayList<>();
+            if (filesAccessed.size() > 0) {
+                for (String s : filesAccessed) {
+                    if (!existingFile.contains(s)) {
+                        ArrayList<relObject> accessWords = rkl.readRelDocs(s, prop.getProperty("stop"));
+                        readWords.addAll(accessWords);
+                    }
+                }
+            }
+            System.out.println(filesAccessed);
             System.out.println("Access Folder checked");
             ArrayList<wordObject> words = null;
             try {
-                words = (ArrayList<wordObject>) rkl.reverseKeyStrokeFileRead();
+                if (os.equals("Windows")) {
+                    words = (ArrayList<wordObject>) rkl.reverseKeyStrokeFileRead();
+                } else if (os.equals("Ubuntu")) {
+                    words = rkl.reverseKeyLogFileForUbuntu();
+                }
                 System.out.println("Activity log Read Complete");
             } catch (Exception e) {
                 System.out.println("Exception in reverse activity log reading");
             }
-            String currQuery = rkl.throwNotification(words, relWords, num, numDoc,prevQuery);
+            String currQuery = rkl.throwNotification(words, relWords,readWords, num, numDoc, prevQuery,numR);
             prevQuery = currQuery;
             Thread.sleep(interval);
         }
@@ -133,7 +156,7 @@ public class NotificationTray {
                 String processNum = prop.getProperty("processNum");
                 ProcessTrigger pr = new ProcessTrigger();
                 pr.stopProcess(processNum);*/
-               
+
                 System.exit(0);
             }
         });

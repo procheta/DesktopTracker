@@ -82,5 +82,7 @@ public class FileAccess {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
+        Calendar c = Calendar.getInstance();
+        System.out.println(c.getTime());
     }
 }

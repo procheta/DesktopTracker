@@ -448,6 +448,86 @@ public class ReadKeyStrokeLog {
         wordList.add("\\[CAPSLOCK]");
     }
 
+    public TimeStamp createTimeStampForUbuntu(int diff) {
+        Calendar c = Calendar.getInstance();
+        String curTime = c.getTime().toString();
+        String st[] = curTime.split("\\s+");
+        String s = " at ";
+        s += st[0] + " " + st[1] + " " + st[2] + " " + st[3] + " " + st[5];
+        TimeStamp t = new TimeStamp(s);
+        int minute = Integer.parseInt(st[3].split(":")[1]);
+        if (minute > diff) {
+            minute -= diff;
+            t.minute = String.valueOf(minute);
+        }
+        return t;
+    }
+
+    public ArrayList<wordObject> reverseKeyLogFileForUbuntu() throws FileNotFoundException, IOException {
+        FileReader fr = new FileReader(new File(keyLogFile));
+        BufferedReader br = new BufferedReader(fr);
+
+        HashMap<String, wordObject> wordMap = new HashMap<>();
+        String line = br.readLine();
+        String typed_words = "";
+        ArrayList<String> words = new ArrayList<>();
+        while (line != null) {
+            if (line.equals("Return")) {
+                words.add(typed_words);
+                typed_words = "";
+            } else {
+                typed_words += line;
+            }
+
+            line = br.readLine();
+        }
+        words.add(typed_words);
+        ArrayList<String> modifiedWords = new ArrayList<>();
+        int diff = 50;
+        for (String s : words) {
+            s = s.replaceAll("Up", "");
+            s = s.replaceAll("Down", "");
+            s = s.replaceAll("Control_L", "");
+            s = s.replaceAll("Shift_L", "");
+            s = s.replaceAll("space", " ");
+            s = s.replaceAll("BackSpace", "");
+            s = s.replaceAll("_", "");
+            s = s.replaceAll("period", " ");
+            s = s.replaceAll("minus", " ");
+            s = s.replaceAll("slash", " ");
+            s = s.replaceAll("Rquestion", " ");
+            s = s.replaceAll("Rcolon", " ");
+            s = s.replaceAll("equal", " ");
+            s = s.replaceAll("Tab", "");
+            System.out.println(s);
+            modifiedWords.add(s);
+            wordObject wob = new wordObject();
+            if (!s.equals("")) {
+                String st[] = s.split("\\s+");
+                for (String word : st) {
+                    if (wordMap.containsKey(word)) {
+                        wob = wordMap.get(word);
+                        wob.tf++;
+                        wordMap.put(word, wob);
+                    } else {
+                        wob.word = word;
+                        wob.tf = 1;
+                        wob.timestamp = createTimeStampForUbuntu(diff);
+                        diff--;
+                        wordMap.put(word, wob);
+                    }
+                }
+            }
+        }
+        ArrayList<wordObject> wList = new ArrayList<>();
+        Iterator it = wordMap.keySet().iterator();
+        while (it.hasNext()) {
+            String st = (String) it.next();
+            wList.add(wordMap.get(st));
+        }
+        return wList;
+    }
+
     public List<wordObject> reverseKeyStrokeFileRead() throws IOException {
         ReversedLinesFileReader object = null;
         int count = 0;
@@ -526,8 +606,6 @@ public class ReadKeyStrokeLog {
                 }
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            //e.printStackTrace();
             System.out.println("Exception occurred while reading keyLog file");
             return null;
         }
@@ -568,7 +646,7 @@ public class ReadKeyStrokeLog {
         return idf;
     }
 
-    public String throwNotification(ArrayList<wordObject> words, ArrayList<relObject> relWords, int num, int numDoc, String prevQuery) throws MalformedURLException, IOException, Exception {
+    public String throwNotification(ArrayList<wordObject> words, ArrayList<relObject> relWords, ArrayList<relObject> readWords, int num, int numDoc, String prevQuery,int numR) throws MalformedURLException, IOException, Exception {
 
         String notitficationLine = "";
         Collections.sort(relWords, Collections.reverseOrder());
@@ -579,6 +657,18 @@ public class ReadKeyStrokeLog {
             count++;
             if (count == num) {
                 break;
+            }
+
+        }
+        if (readWords.size() > 0) {
+            count = 0;
+            for (int i = 0; i < readWords.size(); i++) {
+                if (!notitficationLine.contains(readWords.get(i).word + ":2")) {
+                    notitficationLine += " " + readWords.get(i).word + ":3";
+                    count++;
+                    if(count == numR)
+                        break;
+                }
             }
 
         }
@@ -653,7 +743,16 @@ public class ReadKeyStrokeLog {
                 Snippet = Snippet.replaceAll("\\\\", "");
                 Snippet = Snippet.replaceAll("<B>", "");
                 Snippet = Snippet.replaceAll("</B>", "");
-                rpd.Snippet = Snippet;
+                String tokens[] = Snippet.split("\\s+");
+                String text = "";
+                if (tokens.length > 16) {
+                    for (int i = 0; i < 16; i++) {
+                        text += tokens[i] + " ";
+                    }
+                    rpd.Snippet = Snippet;
+                } else {
+                    rpd.Snippet = Snippet;
+                }
                 rpd.title = title;
 
                 rpd.docId = (String) job1.get("id");
@@ -773,27 +872,21 @@ public class ReadKeyStrokeLog {
         return relWords;
     }
 
-    public ArrayList<relObject> readRelDocs(String relDocPath, String stopFile) throws FileNotFoundException, IOException, TikaException, Exception {
-        File dir = new File(relDocPath);
-        File[] directoryListing = dir.listFiles();
-
-        HashMap<String, relObject> relMap = new HashMap<>();
-        for (File f : directoryListing) {
-            if (f.getName().endsWith(".html")) {
-                String line = "";
-                FileReader fr = new FileReader(f);
-                BufferedReader br = new BufferedReader(fr);
-                line = br.readLine();
-                String htmlText = "";
-                while (line != null) {
-                    htmlText += line;
-                    line = br.readLine();
-                }
-                String title = "";
-                relMap.putAll(processHtml(htmlText, stopFile));
-            }
+    public HashMap<String, relObject> getContent(File f, String stopFile) throws FileNotFoundException, IOException, TikaException, Exception {
+        String line = "";
+        FileReader fr = new FileReader(f);
+        BufferedReader br = new BufferedReader(fr);
+        line = br.readLine();
+        String htmlText = "";
+        while (line != null) {
+            htmlText += line;
+            line = br.readLine();
         }
+        String title = "";
+        return processHtml(htmlText, stopFile);
+    }
 
+    public ArrayList<relObject> getValues(HashMap<String, relObject> relMap) throws IOException {
         Iterator it = relMap.keySet().iterator();
         ArrayList<relObject> values = new ArrayList<>();
 
@@ -804,12 +897,35 @@ public class ReadKeyStrokeLog {
         }
         Collections.sort(values, Collections.reverseOrder());
         for (int i = 0; i < values.size(); i++) {
-
-            // System.out.println(values.get(i).word + ":" + values.get(i).tf);
             values.get(i).tf *= computeIdf(values.get(i).word);
         }
         Collections.sort(values, Collections.reverseOrder());
         return values;
+    }
+
+    public ArrayList<relObject> readRelDocsForFolder(String relDocPath, String stopFile) throws FileNotFoundException, IOException, TikaException, Exception {
+
+        File dir = new File(relDocPath);
+        File[] directoryListing = dir.listFiles();
+
+        HashMap<String, relObject> relMap = new HashMap<>();
+        for (File f : directoryListing) {
+            if (f.getName().endsWith(".html")) {
+                relMap.putAll(getContent(f, stopFile));
+            }
+        }
+        return getValues(relMap);
+    }
+
+    public ArrayList<relObject> readRelDocs(String relDocPath, String stopFile) throws FileNotFoundException, IOException, TikaException, Exception {
+
+        File f = new File(relDocPath);
+
+        HashMap<String, relObject> relMap = new HashMap<>();
+        if (f.getName().endsWith(".html")) {
+            relMap.putAll(getContent(f, stopFile));
+        }
+        return getValues(relMap);
     }
 
     public String getHtmlString(String docId) throws UnsupportedEncodingException, MalformedURLException, IOException {
