@@ -377,48 +377,34 @@ class TimeStamp {
     public String toString() {
         return String.format("Date: " + day + " " + month + " " + year + "  Time: " + hour + ":" + minute + ":" + second);
     }
-}
 
-class WriteObject {
-
-    String windowTitle;
-    String application;
-    String typed_words;
-    TimeStamp timeStamp;
-
-    public WriteObject(String line) {
-        line = line.replaceAll("\\[Window:", "");
-        String chunks[] = line.split("]");
-        line = chunks[0] + "] " + chunks[1].replaceAll("-", "");
-        chunks = line.split("-");
-        windowTitle = chunks[0];
-        application = "";
-        if (chunks.length > 3) {
-            for (int i = 1; i < chunks.length - 1; i++) {
-                application += chunks[i] + " ";
-            }
-        } else {
-            application = chunks[1];
+    public void convertTimeStamp() {
+        if (month.equals("Jan")) {
+            month = "01";
+        } else if (month.equals("Feb")) {
+            month = "02";
+        } else if (month.equals("Mar")) {
+            month = "03";
+        } else if (month.equals("Apr")) {
+            month = "04";
+        } else if (month.equals("May")) {
+            month = "05";
+        } else if (month.equals("Jun")) {
+            month = "06";
+        } else if (month.equals("Jul")) {
+            month = "07";
+        } else if (month.equals("Aug")) {
+            month = "08";
+        } else if (month.equals("Sep")) {
+            month = "09";
+        } else if (month.equals("Oct")) {
+            month = "10";
+        } else if (month.equals("Nov")) {
+            month = "11";
+        } else if (month.equals("Dec")) {
+            month = "12";
         }
-        typed_words = "NA";
-        typed_words = chunks[chunks.length - 1].substring(chunks[chunks.length - 1].lastIndexOf("]") + 1, chunks[chunks.length - 1].length());
-        typed_words = typed_words.replaceAll("\\.", " ");
-        if (typed_words.length() == 1) {
-            typed_words = "NA";
-        }
-        chunks[chunks.length - 1] = chunks[chunks.length - 1].substring(0, chunks[chunks.length - 1].lastIndexOf("]"));
-        timeStamp = new TimeStamp(chunks[chunks.length - 1]);
-    }
 
-    public WriteObject(String line, TimeStamp t, String windowTitle, String application) {
-        typed_words = line;
-        timeStamp = t;
-        this.windowTitle = windowTitle;
-        this.application = application;
-    }
-
-    public String toString() {
-        return String.format("Window Title: " + windowTitle + " Application: " + application + " TimeStamp: " + timeStamp + " Typed Words: " + typed_words);
     }
 }
 
@@ -431,6 +417,7 @@ public class ReadKeyStrokeLog {
     String clickPath;
     double freqThreshold;
     int activityLogThreshold;
+    int activityLogQueryWord;
 
     public ReadKeyStrokeLog() throws FileNotFoundException, IOException {
         Properties prop = new Properties();
@@ -442,6 +429,7 @@ public class ReadKeyStrokeLog {
         freqThreshold = Double.parseDouble(prop.getProperty("relThresh"));
         closeIconpath = prop.getProperty("close");
         activityLogThreshold = Integer.parseInt(prop.getProperty("activityLogThreshold"));
+        activityLogQueryWord = Integer.parseInt(prop.getProperty("activityLogQueryWord"));
     }
 
     public void addKeyword() {
@@ -595,7 +583,11 @@ public class ReadKeyStrokeLog {
 
         }
         if (words != null) {
-            for (int i = 0; i < 3; i++) {
+            int size = activityLogQueryWord;
+            if (size > words.size()) {
+                size = words.size();
+            }
+            for (int i = 0; i < size; i++) {
                 notitficationLine += " " + words.get(i).word + ":5";
             }
         }

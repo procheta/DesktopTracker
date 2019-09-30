@@ -1,0 +1,103 @@
+C:\Users\Procheta\Desktop\accessLog.txt/accessLog.txt Date: 30 09 2019 Time: 13:37:16
+C:\Users\Procheta\Desktop\agent_icon.png/agent_icon.png Date: 30 09 2019 Time: 13:38:08
+C:\Users\Procheta\Desktop\clicklog.txt/clicklog.txt Date: 30 09 2019 Time: 13:37:54
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019 Time: 13:37:50
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019 Time: 13:38:07
+C:\Users\Procheta\Desktop\DesktopTracker.lnk/DesktopTracker.lnk Date: 30 09 2019 Time: 11:37:56
+C:\Users\Procheta\Desktop\Facebook Gameroom.lnk/Facebook Gameroom.lnk Date: 30 09 2019 Time: 11:37:56
+C:\Users\Procheta\Desktop\GitHub Desktop.lnk/GitHub Desktop.lnk Date: 30 09 2019 Time: 11:37:56
+C:\Users\Procheta\Desktop\Log.txt/Log.txt Date: 30 09 2019 Time: 13:37:24
+C:\Users\Procheta\Desktop\Log360.lnk/Log360.lnk Date: 30 09 2019 Time: 11:37:56
+C:\Users\Procheta\Desktop\Opera browser.lnk/Opera browser.lnk Date: 30 09 2019 Time: 11:37:56
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019 Time: 13:38:15
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019 Time: 13:37:24
+C:\Users\Procheta\Desktop\accessLog.txt/accessLog.txt Date: 30 09 2019 Time: 13:38:30
+C:\Users\Procheta\Desktop\agent_icon.png/agent_icon.png Date: 30 09 2019 Time: 13:38:08
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019 Time: 13:40:46
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019 Time: 13:40:42
+C:\Users\Procheta\Desktop\javax.json-1.0.4.jar/javax.json-1.0.4.jar Date: 30 09 2019 Time: 10:40:10
+C:\Users\Procheta\Desktop\lucene-highlighter-4.9-SNAPSHOT.jar/lucene-highlighter-4.9-SNAPSHOT.jar Date: 30 09 2019 Time: 10:40:10
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019 Time: 13:40:48
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019 Time: 13:40:53
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019 Time: 13:44:46
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019 Time: 13:44:41
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019 Time: 13:44:46
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019 Time: 13:44:49
+C:\Users\Procheta\Desktop\accessLog.txt/accessLog.txt Date: 30 09 2019 Time: 13:45:04
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019 Time: 13:45:29
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019 Time: 13:45:23
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019 Time: 13:45:28
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019 Time: 13:45:31
+C:\Users\Procheta\Desktop\.Log.txt.swp/.Log.txt.swp Date: 30 09 2019 Time: 13:29:43
+C:\Users\Procheta\Desktop\accessLog.txt/accessLog.txt Date: 30 09 2019 Time: 13:45:47
+C:\Users\Procheta\Desktop\agent_icon.png/agent_icon.png Date: 30 09 2019 Time: 13:38:08
+C:\Users\Procheta\Desktop\clicklog.txt/clicklog.txt Date: 30 09 2019 Time: 13:37:54
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019 Time: 13:47:37
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019 Time: 13:47:26
+C:\Users\Procheta\Desktop\Discussion/Discussion Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\Log.txt/Log.txt Date: 30 09 2019 Time: 13:37:24
+C:\Users\Procheta\Desktop\newIndex/newIndex Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\newIndex1/newIndex1 Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019 Time: 13:47:39
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019 Time: 13:47:43
+C:\Users\Procheta\Desktop\VisaDocs/VisaDocs Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\.Log.txt.swp/.Log.txt.swp Date: 30 09 2019 Time: 13:29:43
+C:\Users\Procheta\Desktop\accessLog.txt/accessLog.txt Date: 30 09 2019 Time: 13:47:49
+C:\Users\Procheta\Desktop\agent_icon.png/agent_icon.png Date: 30 09 2019 Time: 13:38:08
+C:\Users\Procheta\Desktop\clicklog.txt/clicklog.txt Date: 30 09 2019 Time: 13:37:54
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019 Time: 13:48:38
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019 Time: 13:48:23
+C:\Users\Procheta\Desktop\Discussion/Discussion Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\Log.txt/Log.txt Date: 30 09 2019 Time: 13:37:24
+C:\Users\Procheta\Desktop\newIndex/newIndex Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\newIndex1/newIndex1 Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019 Time: 13:48:41
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019 Time: 13:48:43
+C:\Users\Procheta\Desktop\VisaDocs/VisaDocs Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\.Log.txt.swp/.Log.txt.swp Date: 30 09 2019 Time: 13:29:43
+C:\Users\Procheta\Desktop\accessLog.txt/accessLog.txt Date: 30 09 2019 Time: 13:48:45
+C:\Users\Procheta\Desktop\agent_icon.png/agent_icon.png Date: 30 09 2019 Time: 13:38:08
+C:\Users\Procheta\Desktop\clicklog.txt/clicklog.txt Date: 30 09 2019 Time: 13:37:54
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019 Time: 13:49:29
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019 Time: 13:49:27
+C:\Users\Procheta\Desktop\Discussion/Discussion Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\Log.txt/Log.txt Date: 30 09 2019 Time: 13:37:24
+C:\Users\Procheta\Desktop\newIndex/newIndex Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\newIndex1/newIndex1 Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019 Time: 13:49:30
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019 Time: 13:49:33
+C:\Users\Procheta\Desktop\VisaDocs/VisaDocs Date: 30 09 2019 Time: 13:11:11
+C:\Users\Procheta\Desktop\accessLog.txt/accessLog.txt Date: 30 09 2019 Time: 13:49:49
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019 Time: 13:51:10
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019 Time: 13:51:01
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019 Time: 13:51:06
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019 Time: 13:51:12
+C:\Users\Procheta\Desktop\accessLog.txt/accessLog.txt Date: 30 09 2019 Time: 13:51:15
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019 Time: 13:51:36
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019 Time: 13:51:15
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019 Time: 13:51:37
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019 Time: 13:51:34
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019  Time: 14:00:47
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019  Time: 14:00:30
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019  Time: 14:00:52
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019  Time: 14:00:48
+C:\Users\Procheta\Desktop\accessLog.txt/accessLog.txt Date: 30 09 2019  Time: 14:21:27
+C:\Users\Procheta\Desktop\clicklog.txt/clicklog.txt Date: 30 09 2019  Time: 14:21:27
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019  Time: 14:22:35
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019  Time: 14:22:31
+C:\Users\Procheta\Desktop\Log.txt/Log.txt Date: 30 09 2019  Time: 14:21:27
+C:\Users\Procheta\Desktop\newIndex1/newIndex1 Date: 30 09 2019  Time: 14:21:05
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019  Time: 14:22:37
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019  Time: 14:22:40
+C:\Users\Procheta\Desktop\accessLog.txt/accessLog.txt Date: 30 09 2019  Time: 14:21:27
+C:\Users\Procheta\Desktop\clicklog.txt/clicklog.txt Date: 30 09 2019  Time: 14:21:27
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019  Time: 14:23:21
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019  Time: 14:23:13
+C:\Users\Procheta\Desktop\Log.txt/Log.txt Date: 30 09 2019  Time: 14:21:27
+C:\Users\Procheta\Desktop\newIndex1/newIndex1 Date: 30 09 2019  Time: 14:21:05
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019  Time: 14:23:21
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019  Time: 14:23:24
+C:\Users\Procheta\Desktop\Desktop Documents/Desktop Documents Date: 30 09 2019  Time: 14:27:44
+C:\Users\Procheta\Desktop\desktop.ini/desktop.ini Date: 30 09 2019  Time: 14:27:40
+C:\Users\Procheta\Desktop\relFolder/relFolder Date: 30 09 2019  Time: 14:24:55
+C:\Users\Procheta\Desktop\System32Log.txt/System32Log.txt Date: 30 09 2019  Time: 14:27:50

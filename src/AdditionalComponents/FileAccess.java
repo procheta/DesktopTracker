@@ -30,11 +30,12 @@ public class FileAccess {
             String fileTimeSplit[] = fileHHMM.split(":");
             if (Integer.parseInt(currTimeSplit[0]) < (Integer.parseInt(fileTimeSplit[0]) + 1)) {
                 return -1;
-            } else if ((Integer.parseInt(currTimeSplit[1]) - Integer.parseInt(fileTimeSplit[1])) >= 0 && (Integer.parseInt(currTimeSplit[1]) - Integer.parseInt(fileTimeSplit[1])) < 3) {
-                int thisTime = Integer.parseInt(currTimeSplit[0]) * 3600 + Integer.parseInt(currTimeSplit[1]) * 60 + Integer.parseInt(currTimeSplit[2]);
-                int thatTime = (Integer.parseInt(fileTimeSplit[0]) + 1) * 3600 + Integer.parseInt(fileTimeSplit[1]) * 60 + Integer.parseInt(fileTimeSplit[2]);
+            } else if (Integer.parseInt(currTimeSplit[0]) == (Integer.parseInt(fileTimeSplit[0])+1)) {
+                
+                int thisTime = Integer.parseInt(currTimeSplit[1]) * 60 + Integer.parseInt(currTimeSplit[2]);
+                int thatTime = Integer.parseInt(fileTimeSplit[1]) * 60 + Integer.parseInt(fileTimeSplit[2]);
                 int diff = thisTime - thatTime;
-                if (diff <= (5 * 60 * 60)) {
+                if (diff <= (5 * 60)) {
                     return 1;
                 } else {
                     return -1;
@@ -59,11 +60,18 @@ public class FileAccess {
         for (File f : directoryListing) {
             File myfile = new File(dir.getPath() + "/" + f.getName());
             Path path = myfile.toPath();
-            BasicFileAttributes fatr = Files.readAttributes(path,
-                    BasicFileAttributes.class);
+            BasicFileAttributes fatr = Files.readAttributes(path, BasicFileAttributes.class);
             int flag = getTimeDifference(currTime, fatr.lastAccessTime().toString());
             if (flag == 1) {
-                bw.write(f.getAbsolutePath() + "/" + f.getName() + " " + fatr.lastAccessTime().toString());
+                String st[] = fatr.lastAccessTime().toString().split("T");
+                String timeStamp = "Date: ";
+                String date[] = st[0].split("-");
+                timeStamp += date[2] + " " + date[1] + " " + date[0];
+                st[1] = st[1].substring(0,st[1].indexOf("."));
+                String time[] = st[1].split(":");
+                timeStamp += "  Time: ";
+                timeStamp += String.valueOf(Integer.parseInt(time[0])+1)+":"+time[1] +":"+time[2];
+                bw.write(f.getAbsolutePath() + "/" + f.getName() + " " + timeStamp);
                 bw.newLine();
                 filesAccessed.add(f.getAbsolutePath() + "/" + f.getName());
             }

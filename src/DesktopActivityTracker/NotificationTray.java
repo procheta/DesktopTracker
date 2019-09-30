@@ -10,6 +10,7 @@ package DesktopActivityTracker;
  * @author Procheta
  */
 import AdditionalComponents.FileAccess;
+import ProcessActivityLog.ProcessLog;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -123,6 +124,8 @@ public class NotificationTray {
                 Properties prop = new Properties();
                 try {
                     prop.load(new FileReader(new File("init.properties")));
+                    ProcessLog pl = new ProcessLog(prop);
+                    pl.processActivityLog();
                 } catch (Exception ex) {
                     Logger.getLogger(NotificationTray.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -130,6 +133,7 @@ public class NotificationTray {
                 String processNum = prop.getProperty("processNum");
                 ProcessTrigger pr = new ProcessTrigger();
                 pr.stopProcess(processNum);*/
+               
                 System.exit(0);
             }
         });

@@ -1,0 +1,336 @@
+﻿/* federalgovernmentjobs.us CSS Template © Copyright 2006 */
+/* Basic Tags*/
+body {
+	font-family: Georgia;
+	font-size: small;
+	background-color: #FFFFFF;
+
+}
+div {
+}
+p {
+}
+br {
+}
+ul {
+}
+ul li {
+}
+ol {
+}
+ol li {
+}
+table {
+}
+table tr {
+}
+table td {
+}
+h1 {
+}
+h2 {
+}
+h3 {
+}
+h4 {
+}
+h5 {
+}
+h6 {
+}
+hr {
+}
+form {
+}
+a:link {
+	color: #000066;
+	text-decoration: none;
+}
+a:visited {
+	color: #000066;
+	text-decoration: none;
+}
+a:hover {
+	color: #000066;
+	text-decoration: none;
+	background-color: #eff3fb;
+}
+/* Nav Tags*/
+.spf_navigation {
+	width: 744px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	background-color: #92B4CC;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #92B4CC;
+}
+.spf_navigation a:link {
+	color: #000066;
+	text-decoration: none;
+}
+.spf_navigation a:visited {
+	color: #000066;
+	text-decoration: none;
+}
+.spf_navigation a:hover {
+	color: #000066;
+	text-decoration: none;
+	background-color: #eff3fb;
+}
+.spf_navigation ul {
+	display: inline;
+	text-align: left;
+	margin-left: 0;
+}
+.spf_navigation ul li {
+	display: inline;
+	text-align: left;
+	font-size: small;
+	margin-left: 0;
+}
+.spf_navigation ul li span {
+	color: Lime;
+	font-size: x-small;
+	font-weight: 900;
+	vertical-align: bottom;
+}
+/* ad Tags */
+.spf_ad {
+	width: 728px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	background-color: #FFFFFF;
+	padding:10px 0px 10px 0px;
+
+}
+/* Heading Tags*/
+.spf_heading {
+	width: 744px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #E2ECF1;
+	border-width: 1px;
+	text-align: center;
+	border-style: solid;
+	border-color: #92B4CC;
+
+}
+.spf_heading h1 {
+	color: #000066;
+	display: inline;
+	font-size: medium;
+	font-weight: bolder;
+}
+/* Content Tags*/
+.spf_content {
+	width: 744px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	font-family: Arial;
+	font-size: small;
+	border-top-width: 10px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+	border-style: solid;
+	border-color: #92B4CC;
+	background-color: #FFFFFF;
+
+}
+.spf_content p {
+	text-align: left;
+	font-family: Arial;
+	font-size: small;
+}
+.spf_content pre {
+	text-align: left;
+	font-family: Arial;
+	font-size: small;
+}
+.spf_content table {
+	width: 100%;
+	background-color: #FFFFFF;
+	font-family: Arial;
+	border-collapse: collapse;
+	border-width: 0px;
+}
+.spf_content tr {
+	background-color: #E2ECF1;
+}
+.spf_content tr th {
+	background-color: #92B4CC;
+	font-weight: bold;
+}
+.spf_content tr td {
+	background-color: #FFFFFF;
+}
+/* Results Tags*/
+.spf_results {
+	width: 744px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	font-family: Arial;
+	font-size: small;
+	border-top-width: 10px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+	border-style: solid;
+	border-color: #92B4CC;
+
+}
+.spf_results div {
+	text-align: left;
+}
+.spf_results table {
+	width: 100%;
+	background-color: #F65FFF;
+	font-family: Arial;
+	border-collapse: collapse;
+	border-width: 0px;
+}
+.spf_results tr {
+	background-color: #E2ECF1;
+}
+.spf_results tr th {
+	background-color: #92B4CC;
+	font-weight: bold;
+}
+.spf_results tr td {
+	text-align: left;
+	padding: 0px;
+}
+.spf_results tr.even {
+	background-color: #FFFFFF;
+}
+.spf_results tr td.even {
+	text-align: left;
+	padding: 0px;
+}
+.spf_results a:link {
+	color: #000066;
+	text-decoration: none;
+}
+.spf_results a:visited {
+	color: #33CCFF;
+	text-decoration: none;
+}
+.spf_results a:hover {
+	color: #000066;
+	text-decoration: none;
+	background-color: #eff3fb;
+}
+.class {
+	width: 744px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	font-family: Arial;
+	font-size: small;
+	border-top-width: 10px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+	border-style: solid;
+	border-color: #92B4CC;
+}
+.spf_joblink a:visited {
+	color: #000066;
+	text-decoration: none;
+}
+.locationaction span {
+	color: #FF0000;
+	font-size: x-large;
+}
+/* Copyright Tags*/
+.spf_copyright {
+	text-align: center;
+	font-size: x-small;
+}
+/* highlight Tags */
+.spf_highlight {
+	background-color: #FFFFCC;
+}
+/* Info Tags*/
+.Hide {
+	display: none;
+}
+.DisplayInfo span {
+	width: 400px;
+	height: 400px;
+	background-color: Yellow;
+}
+/* ResultOption Tags 
+    similar to navigation
+*/
+.spf_resultoptions {
+	width: 744px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	font-family: Arial;
+	font-size: small;
+	border-top-width: 10px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+	border-style: solid;
+	border-color: #92B4CC;
+
+}
+.spf_resultoptions a:link {
+	color: #000066;
+	text-decoration: none;
+}
+.spf_resultoptions a:visited {
+	color: #000066;
+	text-decoration: none;
+}
+.spf_resultoptions a:hover {
+	color: #000066;
+	text-decoration: none;
+	background-color: #eff3fb;
+}
+.spf_resultoptions ul {
+	display: inline;
+	text-align: left;
+	margin-left: 0;
+}
+.spf_resultoptions ul li {
+	display: inline;
+	text-align: left;
+	font-size: small;
+	margin-left: 0;
+}
+.spf_resultoptions ul li span {
+	color: Lime;
+	font-size: x-small;
+	font-weight: 900;
+	vertical-align: bottom;
+}
+/* hidden Tags*/
+.hidden {
+	display: none;
+}
+/* loc action tags */
+.locationaction {
+	font-size: xx-small;
+	color: Red;
+}
+@media screen	{
+.VA {
+	text-align: left;
+	overflow: scroll;
+	width: 730px;
+}
+}
+@media print	{
+.VA {
+	text-align: left;
+}
+}
