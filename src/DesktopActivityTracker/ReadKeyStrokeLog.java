@@ -249,7 +249,7 @@ class Translucent extends JPanel implements ActionListener {
                 f.dispose();
             }
         });
-
+        d1 = 15;
         for (int i = 0; i < numNotification; i++) {
             FontMetrics metrics = getFontMetrics(getFont());
             int width = metrics.stringWidth(resps.get(0).Snippet);
@@ -258,7 +258,6 @@ class Translucent extends JPanel implements ActionListener {
             b3.setOpaque(false);
             b3.setContentAreaFilled(false);
             b3.setBorder(new LineBorder(Color.BLACK));
-            b3.setBounds(20, 100 + d, width1 + 180, 20);
 
             Font ff = new Font("Courier New", Font.BOLD, 14);
             b3.setFont(ff);
@@ -266,16 +265,15 @@ class Translucent extends JPanel implements ActionListener {
             attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
             String title = "";
             String tokens[] = resps.get(i).title.split("\\s+");
-            if (tokens.length > 7) {
-                System.out.println(resps.get(i).title);
-                for (int j = 0; j < 8; j++) {
+            if (tokens.length > 6) {
+                for (int j = 0; j < 6; j++) {
                     title += tokens[j] + " ";
                 }
                 width1 = metrics.stringWidth(title);
-                b3.setBounds(20, 100 + d, width1 + 180, 20);
+                b3.setBounds(20, 100 + d, width1 + 180, 15);
             } else {
                 title = resps.get(i).title;
-                b3.setBounds(20, 100 + d, width1 + 180, 20);
+                b3.setBounds(20, 100 + d, width1 + 180, 15);
             }
             b3.setText(title);
             JLabel l = new JLabel();
@@ -283,30 +281,42 @@ class Translucent extends JPanel implements ActionListener {
 
             l.setFont(new Font("Courier New", Font.ITALIC, 12));
             l.setForeground(Color.BLACK);
+            l.setBackground(Color.red);
+            resps.get(i).Snippet = resps.get(i).Snippet.trim();
+            System.out.println(resps.get(i).Snippet);
             tokens = resps.get(i).Snippet.split("\\s+");
             String snippet = "<html>";
             String text = "";
-            if (tokens.length > 8) {
-                for (int j = 0; j < tokens.length; j++) {
-                    if (j % 8 == 0 && j > 0) {
+            if (tokens.length > 4) {
+                System.out.println("here more than 4");
+                int size = 8;
+                if (tokens.length < size) {
+                    size = tokens.length;
+                }
+                for (int j = 0; j < size; j++) {
+                    if (j % 4 == 0 && j > 0) {
                         snippet += tokens[j] + "<br>";
                     } else {
                         snippet += tokens[j] + " ";
                     }
                 }
-                for (int j = 0; j < 8; j++) {
+                for (int j = 0; j < 4; j++) {
                     text += tokens[j] + " ";
                 }
                 snippet += "</html>";
+                //System.out.println(snippet);
                 width = metrics.stringWidth(text);
             } else {
+                System.out.println("less than 8");
                 width = metrics.stringWidth(resps.get(i).Snippet);
                 snippet = resps.get(i).Snippet;
             }
+            //snippet = tokens[0];
             //System.out.println(snippet);
-            l.setBounds(20, 100 + d + 20, width + 50, 40);
+            l.setBounds(20, 100 + d1, 350, 40);
+            //snippet = "hello world";
             l.setText(snippet);
-            d1 = d1 + 90;
+            //d1 = d1 + 90;
             b3.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
@@ -326,7 +336,8 @@ class Translucent extends JPanel implements ActionListener {
             p.add(b3);
             p.add(l);
             // d = d + 60;
-            d = d + 20 + 40 + 10;
+            d = d + 15 + 40 + 10;
+            d1 = d1 + 65;
         }
         f.setVisible(true);
     }
@@ -537,8 +548,8 @@ public class ReadKeyStrokeLog {
         try {
             object = new ReversedLinesFileReader(new File(keyLogFile));
             WriteObject wob = null;
+            String line = object.readLine();
             while (object != null) {
-                String line = object.readLine();
                 if (line != null) {
                     for (String s : wordList) {
                         line = line.replaceAll(s, "");
@@ -604,10 +615,14 @@ public class ReadKeyStrokeLog {
                 if (count == activityLogThreshold) {
                     break;
                 }
+                line = object.readLine();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Exception occurred while reading keyLog file");
-            return null;
+            if (wordMap.size() == 0) {
+                return null;
+            }
+
         }
         object.close();
 
@@ -646,7 +661,7 @@ public class ReadKeyStrokeLog {
         return idf;
     }
 
-    public String throwNotification(ArrayList<wordObject> words, ArrayList<relObject> relWords, ArrayList<relObject> readWords, int num, int numDoc, String prevQuery,int numR) throws MalformedURLException, IOException, Exception {
+    public String throwNotification(ArrayList<wordObject> words, ArrayList<relObject> relWords, ArrayList<relObject> readWords, int num, int numDoc, String prevQuery, int numR) throws MalformedURLException, IOException, Exception {
 
         String notitficationLine = "";
         Collections.sort(relWords, Collections.reverseOrder());
@@ -666,8 +681,9 @@ public class ReadKeyStrokeLog {
                 if (!notitficationLine.contains(readWords.get(i).word + ":2")) {
                     notitficationLine += " " + readWords.get(i).word + ":3";
                     count++;
-                    if(count == numR)
+                    if (count == numR) {
                         break;
+                    }
                 }
             }
 
@@ -688,6 +704,7 @@ public class ReadKeyStrokeLog {
             return notitficationLine;
         }
         ArrayList<ResponseData> resps = createRankedListUsingClueweb(notitficationLine, numDoc);
+        // ArrayList<ResponseData> resps = createRankedListUsingClueweb("oversea:2", numDoc);
         System.out.println("Clueweb results returned for proactive query!!");
         if (resps.size() == 0) {
             System.out.println("Nothing found from the proactive query!!");
@@ -724,7 +741,6 @@ public class ReadKeyStrokeLog {
                 all += line;
             }
             all = all.substring(all.indexOf("["), all.indexOf("</body>")).trim();
-            //System.out.println(all);
             JSONObject jobJSONObject = new JSONObject();
             JSONParser jsonParser = new JSONParser();
             JSONArray jsonArray = (JSONArray) jsonParser.parse(all);

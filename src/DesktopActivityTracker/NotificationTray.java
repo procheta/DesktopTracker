@@ -100,6 +100,7 @@ public class NotificationTray {
                 }
                 System.out.println("Activity log Read Complete");
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("Exception in reverse activity log reading");
             }
             String currQuery = rkl.throwNotification(words, relWords,readWords, num, numDoc, prevQuery,numR);
@@ -142,6 +143,7 @@ public class NotificationTray {
         });
 
         exitItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 tray.remove(trayIcon);
                 Properties prop = new Properties();

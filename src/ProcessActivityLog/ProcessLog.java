@@ -47,6 +47,7 @@ public class ProcessLog {
         wordList.add("\\[END]");
         wordList.add("\\[HOME]");
         wordList.add("\\[CAPSLOCK]");
+        
     }
 
     public void processActivityLog() throws FileNotFoundException, IOException {
@@ -82,7 +83,7 @@ public class ProcessLog {
                     wob.typed_words = wob.typed_words.replaceAll("[0-9]", " ");
                 } catch (Exception e) {
                     e.printStackTrace();
-                    System.out.println(line);
+                   // System.out.println(line);
                 }
                 prevLine = "";
 
@@ -119,7 +120,7 @@ public class ProcessLog {
         Properties prop = new Properties();
         ProcessLog pl = new ProcessLog(prop);
         pl.addKeyword();
-        pl.activityLog = "C:\\Users\\Procheta\\Desktop/System32Log.txt";
+        pl.activityLog = "C:\\Users\\Procheta\\Documents\\NetBeansProjects\\DesktopTracker/System32Log_part1.txt";
         pl.processedLogFile = "C:\\Users\\Procheta\\Desktop/Log.txt";
         pl.processActivityLog();
 

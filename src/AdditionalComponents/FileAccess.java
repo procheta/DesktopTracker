@@ -73,7 +73,7 @@ public class FileAccess {
                 timeStamp += String.valueOf(Integer.parseInt(time[0])+1)+":"+time[1] +":"+time[2];
                 bw.write(f.getAbsolutePath() + "/" + f.getName() + " " + timeStamp);
                 bw.newLine();
-                filesAccessed.add(f.getAbsolutePath() + "/" + f.getName());
+                filesAccessed.add(f.getAbsolutePath());
             }
         }
         bw.close();
