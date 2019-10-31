@@ -619,6 +619,7 @@ public class ReadKeyStrokeLog {
             }
         } catch (Exception e) {
             System.out.println("Exception occurred while reading keyLog file");
+            System.out.println(wordMap);
             if (wordMap.size() == 0) {
                 return null;
             }

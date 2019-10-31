@@ -70,7 +70,6 @@ public class NotificationTray {
         rkl.addKeyword();
         
         File dir = new File(prop.getProperty("relFolder"));
-        System.out.println(dir.getName());
         File[] directoryListing = dir.listFiles();
         ArrayList<String> existingFile = new ArrayList<>();
         for (File f : directoryListing) {
