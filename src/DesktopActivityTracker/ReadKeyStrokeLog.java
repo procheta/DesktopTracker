@@ -619,7 +619,6 @@ public class ReadKeyStrokeLog {
             }
         } catch (Exception e) {
             System.out.println("Exception occurred while reading keyLog file");
-            System.out.println(wordMap);
             if (wordMap.size() == 0) {
                 return null;
             }
@@ -704,6 +703,7 @@ public class ReadKeyStrokeLog {
             System.out.println("Same query formulated...");
             return notitficationLine;
         }
+        //notitficationLine = "oversea:2 india:2 applic:3 music:3 dist:5 tail:5 ltr:5";
         ArrayList<ResponseData> resps = createRankedListUsingClueweb(notitficationLine, numDoc);
         // ArrayList<ResponseData> resps = createRankedListUsingClueweb("oversea:2", numDoc);
         System.out.println("Clueweb results returned for proactive query!!");
@@ -741,7 +741,8 @@ public class ReadKeyStrokeLog {
             while ((line = in.readLine()) != null) {
                 all += line;
             }
-            all = all.substring(all.indexOf("["), all.indexOf("</body>")).trim();
+            all = all.substring(all.indexOf("["), all.lastIndexOf("</body>")).trim();
+            System.out.println();
             JSONObject jobJSONObject = new JSONObject();
             JSONParser jsonParser = new JSONParser();
             JSONArray jsonArray = (JSONArray) jsonParser.parse(all);
@@ -778,7 +779,6 @@ public class ReadKeyStrokeLog {
         } catch (Exception e) {
             System.out.println("Exception occurred while calling Clueweb Search API");
             System.out.println(param1);
-            e.printStackTrace();
         }
         return resps;
     }
