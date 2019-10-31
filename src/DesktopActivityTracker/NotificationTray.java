@@ -68,7 +68,9 @@ public class NotificationTray {
         System.out.println("Initializing user's prior knowledge state...");
         ReadKeyStrokeLog rkl = new ReadKeyStrokeLog();
         rkl.addKeyword();
+        
         File dir = new File(prop.getProperty("relFolder"));
+        System.out.println(dir.getName());
         File[] directoryListing = dir.listFiles();
         ArrayList<String> existingFile = new ArrayList<>();
         for (File f : directoryListing) {
